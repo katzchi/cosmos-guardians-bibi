@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmos Guardians | 旅途中的靈魂夥伴 - 天成飯店集團</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #C5A065; /* 天成金 */
+            --dark-bg: #1A1A1A;     /* 深邃質感黑 */
+            --light-text: #F4F4F4;
+            --accent-city: #A64B2A;   /* 城市磚紅 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Logo 樣式 */
+        .hero-logo {
+            width: 180px; 
+            height: auto;
+            margin-bottom: 80px; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            animation: fadeIn 1.5s ease-in;
+            /* 讓連結區塊內的圖片不產生額外邊框 */
+            border: none; 
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            margin-bottom: 20px;
+            color: var(--primary-gold);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            text-transform: uppercase;
+        }
+
+        .hero p.sub-title {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            border-top: 1px solid var(--primary-gold);
+            padding-top: 20px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            letter-spacing: 3px;
+            animation: bounce 2s infinite;
+        }
+
+        /* --- Story Intro --- */
+        .intro {
+            padding: 100px 20px;
+            text-align: center;
+            background-color: #222;
+            position: relative;
+            z-index: 2;
+        }
+
+        .intro h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary-gold);
+            letter-spacing: 0.1em;
+        }
+
+        /* 文字切換控制 */
+        .text-desktop { display: block; }
+        .text-mobile { display: none; }
+
+        .intro p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+        
+        .intro .text-mobile p {
+            line-height: 2;
+            font-size: 1.05rem;
+        }
+
+        /* --- Character Grid --- */
+        .characters {
+            padding: 80px 5%;
+            background-color: var(--dark-bg);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 欄 */
+            gap: 40px;
+            max-width: 1500px; /* 寬版 */
+            margin: 0 auto;
+            min-height: 500px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            -webkit-perspective: 1000px;
+            height: 520px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            transform: translateZ(0);
+        }
+
+        .card-container:hover .card-inner { transform: rotateY(180deg); }
+        .card-container:active .card-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        /* 卡片正面 */
+        .card-front {
+            background-color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            filter: brightness(0.9);
+            transition: 0.5s;
+        }
+        
+        .card-container:hover .card-front img {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+
+        .card-name-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8), rgba(0,0,0,0.95));
+            border-bottom: 3px solid var(--primary-gold);
+            z-index: 3;
+        }
+
+        .card-name-overlay h3 {
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* 卡片背面 */
+        .card-back {
+            background-color: #f4f1ea;
+            color: #333;
+            transform: rotateY(180deg);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            border: 1px solid var(--primary-gold);
+            z-index: 1;
+        }
+
+        .card-back h3 {
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .card-back .role {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-family: 'Lato', sans-serif;
+            letter-spacing: 2px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* === 藏身地點 === */
+        .card-back .location {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            width: 100%;
+            text-align: center;
+        }
+
+        .location .label {
+            display: block;
+            font-size: 0.75rem;
+            color: #A64B2A;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .card-back .location a {
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .loc-cn {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--accent-city);
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .loc-en {
+            display: block;
+            font-size: 0.7rem;
+            color: #888;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            line-height: 1.2;
+            transition: color 0.3s ease;
+        }
+
+        .card-back .location a:hover .loc-cn { color: var(--primary-gold); }
+        .card-back .location a:hover .loc-en { color: #C5A065; }
+
+        .card-back p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* 小語字體放大 */
+        .card-back .whisper {
+            font-size: 1.05rem; 
+            font-style: italic;
+            color: #A64B2A;
+            background: rgba(197, 160, 101, 0.1);
+            padding: 10px;
+            border-left: 3px solid var(--primary-gold);
+            width: 100%;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        /* --- Collection & Footer --- */
+        .collection {
+            padding: 100px 20px;
+            background: linear-gradient(#1A1A1A, #000);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .collection h2 {
+            color: var(--primary-gold);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-cta {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 40px;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            text-decoration: none;
+            transition: all 0.4s ease;
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .btn-cta:hover {
+            background-color: var(--primary-gold);
+            color: #000;
+            box-shadow: 0 0 30px rgba(197, 160, 101, 0.4);
+        }
+
+        footer {
+            padding: 40px 20px;
+            background-color: #0d0d0d;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #555;
+            border-top: 1px solid #222;
+            letter-spacing: 1px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer Logo 樣式 */
+        .footer-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            border: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* RWD */
+        @media (max-width: 1200px) {
+            .hero h1 { font-size: 2.8rem; }
+            .characters { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 30px;
+                padding: 60px 4%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-logo { width: 140px; margin-bottom: 40px; }
+            
+            .hero { background-attachment: scroll; }
+            .hero h1 { font-size: 2.2rem; margin-bottom: 15px; }
+            .hero p.sub-title { font-size: 1rem; padding: 15px 10px; border-top: 1px solid rgba(197, 160, 101, 0.5); }
+            
+            .intro { padding: 60px 20px; }
+            .intro h2 { font-size: 1.6rem; }
+            
+            .text-desktop { display: none; }
+            .text-mobile { display: block; }
+
+            .characters { 
+                grid-template-columns: 1fr; 
+                padding: 40px 20px; 
+                gap: 50px; 
+            }
+            
+            .card-container { 
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+                height: 560px;
+            }
+            
+            .collection h2 { font-size: 1.8rem; }
+            .btn-cta { width: 100%; padding: 15px 20px; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <a href="https://cosmosapp.tw-cosmos.com/" target="_blank">
+            <img src="logo-newpng.png" alt="天成飯店集團" class="hero-logo">
+        </a>
+        
+        <h1>Cosmos Guardians</h1>
+        <p class="sub-title">在您每一次抵達之前，我們已在此守候。<br>探索天成宇宙的守護精靈 — 比比家族</p>
+        <div class="scroll-indicator">SCROLL TO DISCOVER</div>
+    </section>
+
+    <section class="intro">
+        <h2>旅途中的靈魂夥伴</h2>
+        
+        <div class="text-desktop">
+            <p>旅行的意義，不只在於風景，更在於陪伴。<br>
+            當您踏入天成飯店集團的版圖，您就進入了一個充滿魔法的宇宙。<br>
+            這裡住著一群性格迥異的夥伴，他們有的藏身於都會的霓虹，有的守護著山林的晨露。<br><br>
+            <strong>輕觸下方卡片，尋找屬於您的旅途守護者。</strong></p>
+        </div>
+
+        <div class="text-mobile">
+            <p>旅行的意義，不只在於風景，<br>更在於陪伴。<br><br>
+            當您踏入天成飯店集團的版圖，<br>便進入了一個充滿魔法的宇宙。<br><br>
+            這裡住著一群性格迥異的夥伴，<br>有的藏身於都會的霓虹，<br>有的守護著山林的晨露。<br><br>
+            <strong>輕觸下方卡片，<br>尋找屬於您的旅途守護者。</strong></p>
+        </div>
+    </section>
+
+    <section class="characters">
+        
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_睿比.jpg?text=Ruibby" alt="睿比">
+                    <div class="card-name-overlay">
+                        <h3>RUIBBY 睿比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>睿比 Ruibby</h3>
+                    <div class="role">智慧領航者 | The Wise Owl</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://cosmosapp.tw-cosmos.com/" target="_blank">
+                            <span class="loc-cn">天成飯店集團</span>
+                            <span class="loc-en">Cosmos Hotels and Resorts</span>
+                        </a>
+                    </div>
+                    <p>他是團隊中的邏輯大腦，總是豎起耳羽，用閱讀心靈的能力洞察世界。睿比象徵著經過深思熟慮後的精準決策，以及那份令人安心的沉穩。</p>
+                    <div class="whisper">「智慧，是通往未來的唯一羅盤。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嗚比.jpg?text=Wubby" alt="嗚比">
+                    <div class="card-name-overlay">
+                        <h3>WUBBY 嗚比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>嗚比 Wubby</h3>
+                    <div class="role">時空旅人 | The Traveler</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.cosmos-hotel.com.tw/" target="_blank">
+                            <span class="loc-cn">台北天成大飯店</span>
+                            <span class="loc-en">Cosmos Hotel Taipei</span>
+                        </a>
+                    </div>
+                    <p>設計概念源自火車鳴笛，嗚比見證著車站的聚散離合。他是旅途的起點也是終點，陪伴每一位過客開啟下一段未知的故事。</p>
+                    <div class="whisper">「出發，是為了遇見更好的自己。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_花比.jpg?text=HANABBY" alt="花比">
+                    <div class="card-name-overlay">
+                        <h3>HANABBY 花比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>花比 Hanabby</h3>
+                    <div class="role">城市暖光 | The Concierge</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.taipeigarden.com.tw/" target="_blank">
+                            <span class="loc-cn">台北花園大酒店</span>
+                            <span class="loc-en">Taipei Garden Hotel</span>
+                        </a>
+                    </div>
+                    <p>西區轉角最溫暖的風景。作為第一線禮賓員，花比用圓潤的微笑融化城市的冷漠，詮釋了款待之道中最真誠的本質。</p>
+                    <div class="whisper">「微笑，是世界通用的語言。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_呱比.jpg?text=GUABBY" alt="呱比">
+                    <div class="card-name-overlay">
+                        <h3>GUABBY 呱比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>呱比 Guabby</h3>
+                    <div class="role">歡愉策展人 | The Event Planner</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.cosmos-ticc.com.tw/" target="_blank">
+                            <span class="loc-cn">天成世貿國際會館</span>
+                            <span class="loc-en">Cosmos Banquet at TICC</span>
+                        </a>
+                    </div>
+                    <p>優雅的生活藝術家，從小培養的美學底蘊讓他成為完美的宴會主人。呱比致力於散播歡樂，讓每一次聚會都成為經典。</p>
+                    <div class="whisper">「生活，值得一場盛大的慶祝。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_乳比.jpg?text=RUBBY" alt="乳比">
+                    <div class="card-name-overlay">
+                        <h3>RUBBY 乳比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>乳比 Rubby</h3>
+                    <div class="role">城堡築夢師 | Dream Builder</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.grandcosmos.com.tw/" target="_blank">
+                            <span class="loc-cn">瑞穗天合國際觀光酒店</span>
+                            <span class="loc-en">Grand Cosmos Resort Ruisui, Hualien</span>
+                        </a>
+                    </div>
+                    <p>瑞穗金色城堡的主人，一位天生的夢想家。他像魔法師般將快樂散播在莊園的每個角落，守護著那份純粹的童話與初心。</p>
+                    <div class="whisper">「在夢想的國度裡，沒有不可能。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_柚比.jpg?text=YUZUBBY" alt="柚比">
+                    <div class="card-name-overlay">
+                        <h3>YUZUBBY 柚比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>柚比 Yuzubby</h3>
+                    <div class="role">味覺煉金術師 | Flavor Master</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.grandcosmos.com.tw/" target="_blank">
+                            <span class="loc-cn">瑞穗天合國際觀光酒店</span>
+                            <span class="loc-en">Grand Cosmos Resort Ruisui, Hualien</span>
+                        </a>
+                    </div>
+                    <p>伴隨著滿山的柚花香氣而生，他是將大地食材轉化為幸福料理的小精靈。每一道佳餚，都是他傳遞誠摯心意的載體。</p>
+                    <div class="whisper">「料理的溫度，就是幸福的刻度。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg?text=Q%20BEE" alt="Q Bee">
+                    <div class="card-name-overlay">
+                        <h3>Q BEE Q比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>Q Bee</h3>
+                    <div class="role">歸巢守護者 | The Worker</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.b-house.com.tw/" target="_blank">
+                            <span class="loc-cn">天成文旅-蜂巢</span>
+                            <span class="loc-en">Bee House by Cosmos Creation</span>
+                        </a>
+                    </div>
+                    <p>辛勤工作的蜜蜂，象徵著對生活的熱愛與投入。在忙碌的一天結束後，Q Bee 守候在蜂巢，為歸來的旅人點亮一盞放鬆的燈。</p>
+                    <div class="whisper">「最美的風景，是回家的路。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_寶比.jpg?text=Baobby" alt="寶比">
+                    <div class="card-name-overlay">
+                        <h3>BAOBBY 寶比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>寶比 Baobby</h3>
+                    <div class="role">記憶守密人 | The Vault</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.huashandin.com.tw/" target="_blank">
+                            <span class="loc-cn">天成文旅-華山町</span>
+                            <span class="loc-en">Hua Shan Din by Cosmos Creation</span>
+                        </a>
+                    </div>
+                    <p>頭部是藏寶箱，身體是金庫。寶比不僅嫻熟歷史文化，更負責收藏旅人的珍貴回憶，將那份感動鎖在最深處，永不褪色。</p>
+                    <div class="whisper">「你的回憶，是我最珍貴的寶藏。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嘟比.jpg?text=Dobby" alt="嘟比">
+                    <div class="card-name-overlay">
+                        <h3>DOBBY 嘟比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>嘟比 Dobby</h3>
+                    <div class="role">山林原生力 | The Wild Spirit</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.sundialogue-hotel.com.tw/" target="_blank">
+                            <span class="loc-cn">天成文旅-繪日之丘</span>
+                            <span class="loc-en">Sun Dialogue by Cosmos Creation</span>
+                        </a>
+                    </div>
+                    <p>擁有堅強意志力的山豬，象徵著原住民樂觀開朗的天性。嘟比帶領旅人放慢腳步，在繪日之丘感受最純粹的生命力。</p>
+                    <div class="whisper">「感受心跳與大地的共鳴。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_啾比.jpg?text=JUBEE" alt="啾比">
+                    <div class="card-name-overlay">
+                        <h3>JUBEE 啾比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>啾比 Jubee</h3>
+                    <div class="role">美食尋訪者 | The Gourmet</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.tygc.com.tw/" target="_blank">
+                            <span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span>
+                            <span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span>
+                        </a>
+                    </div>
+                    <p>總是叼著小魚的白鷺鷥，對美食有著絕對的執著。他象徵著旅途中對風味的極致追求，引領旅人穿梭大街小巷，尋找味蕾的感動。</p>
+                    <div class="whisper">「美食在哪，心之所向便在哪。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_角比.jpg?text=JIAOBBY" alt="角比">
+                    <div class="card-name-overlay">
+                        <h3>JIAOBBY 角比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>角比 Jiaobby</h3>
+                    <div class="role">盛夏發現者 | Summer Seeker</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.tygc.com.tw/" target="_blank">
+                            <span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span>
+                            <span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span>
+                        </a>
+                    </div>
+                    <p>頭頂觸角隨時偵測著樂趣的方位。角比熱情如火，樂於分享生活中的瑣事與發現，他是製造歡樂氣氛的高手。</p>
+                    <div class="whisper">「保持好奇，世界就是你的遊樂場。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鵲比.jpg?text=CHIUEBBY" alt="鵲比">
+                    <div class="card-name-overlay">
+                        <h3>CHIUEBBY 鵲比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>鵲比 Chiuebby</h3>
+                    <div class="role">果嶺上的優雅 | The Ace</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.tygc.com.tw/" target="_blank">
+                            <span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span>
+                            <span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span>
+                        </a>
+                    </div>
+                    <p>小巧聰明的藍鵲，是球場上的運動好手。鵲比化身專業桿弟，在藍天綠地之間，陪伴球友尋找完美的揮桿節奏。</p>
+                    <div class="whisper">「專注當下，成就完美一擊。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_栗比.jpg?text=LIBBY" alt="栗比">
+                    <div class="card-name-overlay">
+                        <h3>LIBBY 栗比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>栗比 Libby</h3>
+                    <div class="role">森之探險家 | The Ranger</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://bonchillglamping.com.tw/" target="_blank">
+                            <span class="loc-cn">天成逸旅-朋趣豪華露營</span>
+                            <span class="loc-en">Bon Chill Glamping by Cosmos Orium</span>
+                        </a>
+                    </div>
+                    <p>隱身在露營區的調皮松鼠，象徵著管家無所不在的貼心。栗比在不經意間出沒，為野奢露營體驗增添一份驚喜與溫暖。</p>
+                    <div class="whisper">「驚喜，總在下一個轉角。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_錨比.jpg?text=ANKABBY" alt="錨比">
+                    <div class="card-name-overlay">
+                        <h3>ANKABBY 錨比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>錨比 Ankabby</h3>
+                    <div class="role">港都領航員 | The Captain</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://www.cosmos-oasis-voyage.com.tw/" target="_blank">
+                            <span class="loc-cn">天成逸旅-舶寓高雄</span>
+                            <span class="loc-en">Voyage Kaohsiung by Cosmos Orium</span>
+                        </a>
+                    </div>
+                    <p>充滿冒險精神的航海家，臉上總是掛著自信的笑容。錨比熟知高雄港的每一段歷史與潮汐，帶領旅人領略這座城市的豪邁與浪漫。</p>
+                    <div class="whisper">「已下錨，請在此停泊你的心。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鷗比.jpg?text=OUBBY" alt="歐比">
+                    <div class="card-name-overlay">
+                        <h3>OUBBY 歐比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>歐比 Oubby</h3>
+                    <div class="role">自由海洋之翼 | The Voyager</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <div style="cursor: default;">
+                            <span class="loc-cn">天成逸旅-曉琉球</span>
+                            <span class="loc-en">Xiao Liu Qiu by Cosmos Orium</span>
+                        </div>
+                    </div>
+                    <p>象徵希望的海龜，在小琉球的湛藍中自在飛翔。歐比鼓勵旅人掙脫束縛，勇敢追逐夢想，享受那份無拘無束的自由。</p>
+                    <div class="whisper">「心若自由，哪裡都是天空。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_特比.jpg?text=TURBBY" alt="特比">
+                    <div class="card-name-overlay">
+                        <h3>TURBBY 特比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>特比 Turbby</h3>
+                    <div class="role">湛藍守護者 | Eco Guardian</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <div style="cursor: default;">
+                            <span class="loc-cn">天成逸旅-曉琉球</span>
+                            <span class="loc-en">Xiao Liu Qiu by Cosmos Orium</span>
+                        </div>
+                    </div>
+                    <p>親切圓潤的島嶼管家，也是位堅定的環保小尖兵。特比提醒著我們，在享受海島魅力的同時，不忘溫柔守護這片美麗的家園。</p>
+                    <div class="whisper">「守護，是為了更長久的相遇。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/11/天成逸旅-蝴蝶谷-代言人-舞比.jpg?text=FLIBBY" alt="舞比">
+                    <div class="card-name-overlay">
+                        <h3>FLIBBY 舞比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>舞比 Flibby</h3>
+                    <div class="role">光影捕手 | The Artist</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://hualien.cosmos-oasis.com/" target="_blank">
+                            <span class="loc-cn">天成逸旅-蝴蝶谷</span>
+                            <span class="loc-en">Butterfly Valley by Cosmos Orium</span>
+                        </a>
+                    </div>
+                    <p>身為插畫家的蝴蝶，擁有捕捉夢幻瞬間的天賦。舞比用她的畫筆，將森林的氣息與陽光的溫度永恆留存，讓色彩在想像中翩翩飛舞。</p>
+                    <div class="whisper">「生活即藝術，你就是風景。」</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/11/天成逸旅-蝴蝶谷-代言人-樹比.jpg?text=TREEBBY" alt="樹比">
+                    <div class="card-name-overlay">
+                        <h3>TREEBBY 樹比</h3>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <h3>樹比 Treebby</h3>
+                    <div class="role">森林智者 | The Guardian</div>
+                    <div class="location">
+                        <span class="label">📍 藏身於</span>
+                        <a href="https://hualien.cosmos-oasis.com/" target="_blank">
+                            <span class="loc-cn">天成逸旅-蝴蝶谷</span>
+                            <span class="loc-en">Butterfly Valley by Cosmos Orium</span>
+                        </a>
+                    </div>
+                    <p>居住在全台最大樟樹林的守護者，散發著安定的力量。樹比靜靜地陪伴，讓旅人在自然的節奏中，找回內心的平靜與秩序。</p>
+                    <div class="whisper">「靜謐，是最強大的力量。」</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="collection">
+        <h2>蒐集散落在台灣地圖上的能量</h2>
+        <p style="color: #999; margin-bottom: 30px;">每一隻比比家族成員，
+        <br>都代表著天成飯店集團的一處獨特風景。
+<br>2026年，請讓我們成為您旅途中的專屬印記。</p>
+        <a href="https://www.book-secure.com/index.php?s=group&group=asiatwcosmoshtls&&adults1=1&children1=0&locale=zh_Hant_HK&FSTBKNGTrackLink=CUST-APP" target="_blank" class="btn-cta">預約下一趟旅程 | Book Your Journey</a>
+        <br><br>
+        <a href="https://www.tw-cosmos.com/brand-ambassadors-mascots/" target="_blank"style="color: #666; font-size: 0.9rem; text-decoration: none; border-bottom: 1px solid #666;">前往官網查看完整檔案</a>
+    </section>
+
+    <footer>
+        <a href="https://cosmosapp.tw-cosmos.com/" target="_blank">
+            <img src="logo-newpng.png" alt="天成飯店集團" class="footer-logo">
+        </a>
+        <p>&copy; 2026 Cosmos Hotels & Resorts. All Rights Reserved.</p>
+        <p>Cosmos Guardians - The Spirits of Hospitality.</p>
+    </footer>
+
+</body>
+</html>
