@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <title>Cosmos Guardians | 旅途中的靈魂夥伴 - 天成飯店集團</title>
+    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://katzchi.github.io/cosmos-guardians-bibi/">
+    <meta property="og:title" content="Cosmos Guardians | 旅途中的靈魂夥伴">
+    <meta property="og:description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
@@ -49,14 +58,13 @@
             z-index: 1;
         }
 
-        /* Hero Logo 樣式 */
+        /* Hero Logo */
         .hero-logo {
             width: 180px; 
             height: auto;
             margin-bottom: 80px; 
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
             animation: fadeIn 1.5s ease-in;
-            /* 讓連結區塊內的圖片不產生額外邊框 */
             border: none; 
         }
 
@@ -70,14 +78,28 @@
             text-transform: uppercase;
         }
 
+        /* 【修改】首頁副標題樣式調整 */
         .hero p.sub-title {
             font-size: 1.2rem;
             max-width: 600px;
-            margin-bottom: 40px;
+            /* margin-bottom 從 40px 改為 10px，縮小與下方分隔線的距離 */
+            margin-bottom: 10px; 
             font-weight: 300;
             letter-spacing: 0.1em;
             border-top: 1px solid var(--primary-gold);
             padding-top: 20px;
+        }
+
+        /* 【新增】第二段副標題樣式 (比比家族) */
+        .hero p.sub-title-extra {
+            font-size: 1.1rem;
+            max-width: 600px;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            /* 增加上方間距，拉開距離 */
+            margin-top: 25px; 
+            margin-bottom: 40px;
+            color: #e0e0e0; /* 稍微淺一點的顏色做出層次 */
         }
 
         .scroll-indicator {
@@ -266,10 +288,23 @@
             font-weight: 500;
         }
 
+        /* 【新增】微浮動動畫定義 */
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); } /* 輕微向上浮動 3px */
+        }
+
         .card-back .location a {
             text-decoration: none;
             display: block;
             transition: all 0.3s ease;
+            /* 【修改】應用微浮動動畫：3秒一次，無限循環，輕柔效果 */
+            animation: subtle-float 3s ease-in-out infinite;
+        }
+
+        /* 滑鼠移上去時暫停動畫，避免干擾 Hover 效果 */
+        .card-back .location a:hover {
+            animation-play-state: paused; 
         }
 
         .loc-cn {
@@ -365,7 +400,7 @@
             z-index: 2;
         }
 
-        /* Footer Logo 樣式 */
+        /* Footer Logo */
         .footer-logo {
             width: 200px;
             height: auto;
@@ -400,7 +435,10 @@
             
             .hero { background-attachment: scroll; }
             .hero h1 { font-size: 2.2rem; margin-bottom: 15px; }
-            .hero p.sub-title { font-size: 1rem; padding: 15px 10px; border-top: 1px solid rgba(197, 160, 101, 0.5); }
+            
+            /* 【修改】手機版對應調整：縮小間距 */
+            .hero p.sub-title { font-size: 1rem; padding: 15px 10px; margin-bottom: 5px; }
+            .hero p.sub-title-extra { font-size: 0.9rem; margin-top: 15px; margin-bottom: 30px; }
             
             .intro { padding: 60px 20px; }
             .intro h2 { font-size: 1.6rem; }
@@ -434,7 +472,9 @@
         </a>
         
         <h1>Cosmos Guardians</h1>
-        <p class="sub-title">在您每一次抵達之前，我們已在此守候。<br>探索天成宇宙的守護精靈 — 比比家族</p>
+        <p class="sub-title">在您每一次抵達之前，<br>我們已在此守候。</p>
+        <p class="sub-title-extra">探索天成宇宙的守護精靈 — 比比家族</p>
+        
         <div class="scroll-indicator">SCROLL TO DISCOVER</div>
     </section>
 
