@@ -78,11 +78,9 @@
             text-transform: uppercase;
         }
 
-        /* 【修改】首頁副標題樣式調整 */
         .hero p.sub-title {
             font-size: 1.2rem;
             max-width: 600px;
-            /* margin-bottom 從 40px 改為 10px，縮小與下方分隔線的距離 */
             margin-bottom: 10px; 
             font-weight: 300;
             letter-spacing: 0.1em;
@@ -90,16 +88,14 @@
             padding-top: 20px;
         }
 
-        /* 【新增】第二段副標題樣式 (比比家族) */
         .hero p.sub-title-extra {
             font-size: 1.1rem;
             max-width: 600px;
             font-weight: 300;
             letter-spacing: 0.15em;
-            /* 增加上方間距，拉開距離 */
             margin-top: 25px; 
             margin-bottom: 40px;
-            color: #e0e0e0; /* 稍微淺一點的顏色做出層次 */
+            color: #e0e0e0; 
         }
 
         .scroll-indicator {
@@ -127,7 +123,6 @@
             letter-spacing: 0.1em;
         }
 
-        /* 文字切換控制 */
         .text-desktop { display: block; }
         .text-mobile { display: none; }
 
@@ -148,9 +143,9 @@
             padding: 80px 5%;
             background-color: var(--dark-bg);
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 欄 */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 40px;
-            max-width: 1500px; /* 寬版 */
+            max-width: 1500px; 
             margin: 0 auto;
             min-height: 500px;
             position: relative;
@@ -163,6 +158,8 @@
             height: 520px;
             cursor: pointer;
             position: relative;
+            /* 移除原本的 -webkit-tap-highlight-color，避免手機點擊閃爍 */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .card-inner {
@@ -178,8 +175,16 @@
             transform: translateZ(0);
         }
 
-        .card-container:hover .card-inner { transform: rotateY(180deg); }
-        .card-container:active .card-inner { transform: rotateY(180deg); }
+        /* 【修改】不再使用 :hover 翻轉，改用 JS 控制 .flipped 類別 */
+        /* 手機與電腦統一邏輯：點擊翻轉 */
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* 僅在滑鼠懸停時給一點點放大提示，但不翻轉 */
+        .card-container:hover .card-inner {
+            box-shadow: 0 20px 40px rgba(197, 160, 101, 0.2);
+        }
 
         .card-front, .card-back {
             position: absolute;
@@ -212,9 +217,9 @@
             transition: 0.5s;
         }
         
-        .card-container:hover .card-front img {
-            filter: brightness(1.1);
-            transform: scale(1.05);
+        .card-container.flipped .card-front img {
+             /* 翻轉後稍微變暗一點點 */
+             filter: brightness(0.8);
         }
 
         .card-name-overlay {
@@ -288,21 +293,19 @@
             font-weight: 500;
         }
 
-        /* 【新增】微浮動動畫定義 */
+        /* 微浮動動畫定義 */
         @keyframes subtle-float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); } /* 輕微向上浮動 3px */
+            50% { transform: translateY(-3px); } 
         }
 
         .card-back .location a {
             text-decoration: none;
             display: block;
             transition: all 0.3s ease;
-            /* 【修改】應用微浮動動畫：3秒一次，無限循環，輕柔效果 */
             animation: subtle-float 3s ease-in-out infinite;
         }
 
-        /* 滑鼠移上去時暫停動畫，避免干擾 Hover 效果 */
         .card-back .location a:hover {
             animation-play-state: paused; 
         }
@@ -339,7 +342,6 @@
             text-align: justify;
         }
 
-        /* 小語字體放大 */
         .card-back .whisper {
             font-size: 1.05rem; 
             font-style: italic;
@@ -400,7 +402,6 @@
             z-index: 2;
         }
 
-        /* Footer Logo */
         .footer-logo {
             width: 200px;
             height: auto;
@@ -436,7 +437,6 @@
             .hero { background-attachment: scroll; }
             .hero h1 { font-size: 2.2rem; margin-bottom: 15px; }
             
-            /* 【修改】手機版對應調整：縮小間距 */
             .hero p.sub-title { font-size: 1rem; padding: 15px 10px; margin-bottom: 5px; }
             .hero p.sub-title-extra { font-size: 0.9rem; margin-top: 15px; margin-bottom: 30px; }
             
@@ -949,6 +949,40 @@
         <p>&copy; 2026 Cosmos Hotels & Resorts. All Rights Reserved.</p>
         <p>Cosmos Guardians - The Spirits of Hospitality.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-container');
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Check if this card is currently open
+                    const isOpen = card.classList.contains('flipped');
+
+                    // Find if there is another card already open
+                    const currentlyOpen = document.querySelector('.card-container.flipped');
+
+                    if (currentlyOpen && currentlyOpen !== card) {
+                        // If another card is open, close it first
+                        currentlyOpen.classList.remove('flipped');
+                        
+                        // Add a slight delay before opening the new card to create a "wave" effect
+                        // This prevents the "too synchronous" robotic feel
+                        setTimeout(() => {
+                            card.classList.add('flipped');
+                        }, 200); // 200ms delay
+                    } else {
+                        // If no other card is open, or we are clicking the same card, toggle immediately
+                        if (isOpen) {
+                            card.classList.remove('flipped');
+                        } else {
+                            card.classList.add('flipped');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
