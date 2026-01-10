@@ -493,11 +493,9 @@
             transition: all 0.3s;
             text-align: center;
             font-size: 1rem;
-            /* 【修改】移除點擊後的預設框線 */
             outline: none;
         }
         
-        /* 【修改】懸停效果優化：背景微亮，文字保持金色，避免白色突兀感 */
         .game-btn:hover {
             border-color: var(--primary-gold);
             background: rgba(197, 160, 101, 0.2); 
@@ -505,7 +503,6 @@
             box-shadow: 0 0 10px rgba(197, 160, 101, 0.1);
         }
         
-        /* 【新增】聚焦狀態 (鍵盤操作或點擊後) 也保持一致 */
         .game-btn:focus {
             background: rgba(197, 160, 101, 0.2);
             color: var(--primary-gold);
@@ -1094,12 +1091,11 @@
         ];
 
         const results = {
-            // 美食與享樂組
+            // 美食與享樂組 (包含呱比)
             foodie: [
                 { name: "柚比 Yuzubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_柚比.jpg", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
                 { name: "啾比 Jubee", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_啾比.jpg", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
                 { name: "花比 Hanabby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_花比.jpg", desc: "你是朋友眼中溫暖的小太陽，喜歡熱鬧與分享。就像城市暖光花比一樣，用微笑融化陌生感，享受人與人之間最真誠的互動。", link: "https://www.taipeigarden.com.tw/" },
-                { name: "角比 Jiaobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_角比.jpg", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
                 { name: "呱比 Guabby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_呱比.jpg", desc: "你講究生活品味，是天生的策展人。對你來說，旅行就是一場流動的饗宴。呱比優雅的身影，正邀請你共赴一場盛大的慶祝。", link: "https://www.cosmos-ticc.com.tw/" }
             ],
             // 療癒與自然組
@@ -1110,18 +1106,19 @@
                 { name: "特比 Turbby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_特比.jpg", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
                 { name: "Q比 Q Bee", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
-            // 智慧與策劃組
+            // 智慧與策劃組 (包含鵲比)
             planner: [
                 { name: "睿比 Ruibby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_睿比.jpg", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
                 { name: "寶比 Baobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_寶比.jpg", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
                 { name: "鵲比 Chiuebby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鵲比.jpg", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
                 { name: "乳比 Rubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_乳比.jpg", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
             ],
-            // 冒險與自由組
+            // 冒險與自由組 (包含角比)
             adventure: [
                 { name: "嘟比 Dobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嘟比.jpg", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
                 { name: "嗚比 Wubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嗚比.jpg", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
                 { name: "錨比 Ankabby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_錨比.jpg", desc: "你擁有領航員般的勇氣與視野。錨比象徵著港都的豪邁，他鼓勵你勇敢掌舵，在人生的航道上乘風破浪。", link: "https://www.cosmos-oasis-voyage.com.tw/" },
+                { name: "角比 Jiaobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_角比.jpg", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
                 { name: "歐比 Oubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鷗比.jpg", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } // 曉琉球
             ]
         };
