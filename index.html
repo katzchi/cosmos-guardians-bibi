@@ -437,7 +437,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
             z-index: 9999;
             justify-content: center;
@@ -508,11 +508,14 @@
             color: var(--primary-gold);
         }
 
+        /* 【修改】結果頁圖片樣式：改為大頭照特寫 */
         .result-img {
             width: 180px;
             height: 180px;
             border-radius: 50%;
+            /* 關鍵：使用 cover 填滿，並對齊上方中心，達成「大頭照」效果 */
             object-fit: cover;
+            object-position: top center;
             border: 3px solid var(--primary-gold);
             margin: 20px auto;
         }
@@ -1166,7 +1169,7 @@
         let currentQuestion = 0;
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
         let currentResultName = ""; 
-        let currentResultRole = ""; // 新增：儲存頭銜
+        let currentResultRole = "";
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
@@ -1246,7 +1249,6 @@
             const randomIndex = Math.floor(Math.random() * categoryArray.length);
             const res = categoryArray[randomIndex];
 
-            // 儲存結果供分享使用
             currentResultName = res.name; 
             currentResultRole = res.role;
 
@@ -1254,7 +1256,6 @@
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
 
-            // 判斷是否為曉琉球 (連結為空)
             const btnLink = document.getElementById('resultLink');
             const txtComing = document.getElementById('resultComingSoon');
 
@@ -1269,10 +1270,8 @@
             }
         }
 
-        // --- 分享功能 ---
         function shareToLine() {
             const url = encodeURIComponent(window.location.href);
-            // 組合：我的靈魂旅伴是 [頭銜] - [名字]
             const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultRole} - ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
             window.open(`https://line.me/R/msg/text/?${text}%0D%0A${url}`);
         }
