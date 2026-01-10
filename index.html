@@ -437,7 +437,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
             z-index: 9999;
             justify-content: center;
@@ -517,6 +517,37 @@
             margin: 20px auto;
         }
         
+        /* 分享區塊樣式 */
+        .share-section {
+            margin-top: 30px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            background: transparent;
+            border: 1px solid #666;
+            color: #888;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: 'Noto Serif TC', serif;
+        }
+        
+        .share-btn:hover {
+            border-color: var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
         .mobile-break { display: inline; }
         
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
@@ -1055,7 +1086,16 @@
                     他藏身於天成文旅-曉琉球，<span class="mobile-break"></span>即將於2026年中與您見面
                 </p>
                 
-                <button class="game-btn" onclick="startGame()" style="margin-top:10px; border-color: #666; color: #888;">再測一次</button>
+                <div class="share-section">
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">SHARE YOUR GUARDIAN</p>
+                    <div class="share-buttons">
+                        <button onclick="shareToLine()" class="share-btn">LINE 分享</button>
+                        <button onclick="shareToFB()" class="share-btn">Facebook 分享</button>
+                        <button onclick="copyLink()" class="share-btn">複製連結</button>
+                    </div>
+                </div>
+
+                <button class="game-btn" onclick="startGame()" style="margin-top:20px; border-color: #666; color: #888;">再測一次</button>
             </div>
         </div>
     </div>
@@ -1091,7 +1131,7 @@
         ];
 
         const results = {
-            // 美食與享樂組 (包含呱比)
+            // 美食與享樂組
             foodie: [
                 { name: "柚比 Yuzubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_柚比.jpg", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
                 { name: "啾比 Jubee", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_啾比.jpg", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
@@ -1106,14 +1146,14 @@
                 { name: "特比 Turbby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_特比.jpg", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
                 { name: "Q比 Q Bee", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
-            // 智慧與策劃組 (包含鵲比)
+            // 智慧與策劃組
             planner: [
                 { name: "睿比 Ruibby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_睿比.jpg", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
                 { name: "寶比 Baobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_寶比.jpg", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
                 { name: "鵲比 Chiuebby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鵲比.jpg", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
                 { name: "乳比 Rubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_乳比.jpg", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
             ],
-            // 冒險與自由組 (包含角比)
+            // 冒險與自由組
             adventure: [
                 { name: "嘟比 Dobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嘟比.jpg", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
                 { name: "嗚比 Wubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嗚比.jpg", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
@@ -1125,6 +1165,7 @@
 
         let currentQuestion = 0;
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
+        let currentResultName = ""; // 儲存當前結果名字供分享使用
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
@@ -1204,6 +1245,8 @@
             const randomIndex = Math.floor(Math.random() * categoryArray.length);
             const res = categoryArray[randomIndex];
 
+            currentResultName = res.name; // 更新全域變數供分享使用
+
             document.getElementById('resultName').innerText = res.name;
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
@@ -1219,9 +1262,26 @@
             } else {
                 btnLink.style.display = 'none';
                 txtComing.style.display = 'block';
-                // 手機版斷行設計
                 txtComing.innerHTML = `他藏身於天成文旅-曉琉球，<span class="mobile-break"></span>即將於2026年中與您見面`;
             }
+        }
+
+        // --- 分享功能 ---
+        function shareToLine() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
+            window.open(`https://line.me/R/msg/text/?${text}%0D%0A${url}`);
+        }
+
+        function shareToFB() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("連結已複製！");
+            });
         }
     </script>
 
