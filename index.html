@@ -437,7 +437,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
             backdrop-filter: blur(4px);
             z-index: 9999;
             justify-content: center;
@@ -1131,41 +1131,42 @@
         ];
 
         const results = {
-            // 美食與享樂組
+            // 美食與享樂組 (包含呱比)
             foodie: [
-                { name: "柚比 Yuzubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_柚比.jpg", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
-                { name: "啾比 Jubee", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_啾比.jpg", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
-                { name: "花比 Hanabby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_花比.jpg", desc: "你是朋友眼中溫暖的小太陽，喜歡熱鬧與分享。就像城市暖光花比一樣，用微笑融化陌生感，享受人與人之間最真誠的互動。", link: "https://www.taipeigarden.com.tw/" },
-                { name: "呱比 Guabby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_呱比.jpg", desc: "你講究生活品味，是天生的策展人。對你來說，旅行就是一場流動的饗宴。呱比優雅的身影，正邀請你共赴一場盛大的慶祝。", link: "https://www.cosmos-ticc.com.tw/" }
+                { name: "柚比 Yuzubby", role: "味覺煉金術師", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_柚比.jpg", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
+                { name: "啾比 Jubee", role: "美食尋訪者", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_啾比.jpg", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
+                { name: "花比 Hanabby", role: "城市暖光", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_花比.jpg", desc: "你是朋友眼中溫暖的小太陽，喜歡熱鬧與分享。就像城市暖光花比一樣，用微笑融化陌生感，享受人與人之間最真誠的互動。", link: "https://www.taipeigarden.com.tw/" },
+                { name: "呱比 Guabby", role: "歡愉策展人", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_呱比.jpg", desc: "你講究生活品味，是天生的策展人。對你來說，旅行就是一場流動的饗宴。呱比優雅的身影，正邀請你共赴一場盛大的慶祝。", link: "https://www.cosmos-ticc.com.tw/" }
             ],
             // 療癒與自然組
             chill: [
-                { name: "樹比 Treebby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/11/天成逸旅-蝴蝶谷-代言人-樹比.jpg", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
-                { name: "舞比 Flibby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/11/天成逸旅-蝴蝶谷-代言人-舞比.jpg", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
-                { name: "栗比 Libby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_栗比.jpg", desc: "你喜歡舒適愜意的氛圍，享受被照顧的感覺。調皮又貼心的栗比，將在豪華露營的星空下，為你帶來意想不到的驚喜。", link: "https://bonchillglamping.com.tw/" },
-                { name: "特比 Turbby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_特比.jpg", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
-                { name: "Q比 Q Bee", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
+                { name: "樹比 Treebby", role: "森林智者", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/11/天成逸旅-蝴蝶谷-代言人-樹比.jpg", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
+                { name: "舞比 Flibby", role: "光影捕手", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/11/天成逸旅-蝴蝶谷-代言人-舞比.jpg", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
+                { name: "栗比 Libby", role: "森之探險家", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_栗比.jpg", desc: "你喜歡舒適愜意的氛圍，享受被照顧的感覺。調皮又貼心的栗比，將在豪華露營的星空下，為你帶來意想不到的驚喜。", link: "https://bonchillglamping.com.tw/" },
+                { name: "特比 Turbby", role: "湛藍守護者", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_特比.jpg", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
+                { name: "Q比 Q Bee", role: "歸巢守護者", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
-            // 智慧與策劃組
+            // 智慧與策劃組 (包含鵲比)
             planner: [
-                { name: "睿比 Ruibby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_睿比.jpg", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
-                { name: "寶比 Baobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_寶比.jpg", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
-                { name: "鵲比 Chiuebby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鵲比.jpg", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
-                { name: "乳比 Rubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_乳比.jpg", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
+                { name: "睿比 Ruibby", role: "智慧領航者", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_睿比.jpg", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
+                { name: "寶比 Baobby", role: "記憶守密人", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_寶比.jpg", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
+                { name: "鵲比 Chiuebby", role: "果嶺上的優雅", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鵲比.jpg", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
+                { name: "乳比 Rubby", role: "城堡築夢師", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_乳比.jpg", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
             ],
-            // 冒險與自由組
+            // 冒險與自由組 (包含角比)
             adventure: [
-                { name: "嘟比 Dobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嘟比.jpg", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
-                { name: "嗚比 Wubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嗚比.jpg", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
-                { name: "錨比 Ankabby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_錨比.jpg", desc: "你擁有領航員般的勇氣與視野。錨比象徵著港都的豪邁，他鼓勵你勇敢掌舵，在人生的航道上乘風破浪。", link: "https://www.cosmos-oasis-voyage.com.tw/" },
-                { name: "角比 Jiaobby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_角比.jpg", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
-                { name: "歐比 Oubby", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鷗比.jpg", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } // 曉琉球
+                { name: "嘟比 Dobby", role: "山林原生力", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嘟比.jpg", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
+                { name: "嗚比 Wubby", role: "時空旅人", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_嗚比.jpg", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
+                { name: "錨比 Ankabby", role: "港都領航員", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_錨比.jpg", desc: "你擁有領航員般的勇氣與視野。錨比象徵著港都的豪邁，他鼓勵你勇敢掌舵，在人生的航道上乘風破浪。", link: "https://www.cosmos-oasis-voyage.com.tw/" },
+                { name: "角比 Jiaobby", role: "盛夏發現者", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_角比.jpg", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
+                { name: "歐比 Oubby", role: "自由海洋之翼", img: "https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_鷗比.jpg", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } // 曉琉球
             ]
         };
 
         let currentQuestion = 0;
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
-        let currentResultName = ""; // 儲存當前結果名字供分享使用
+        let currentResultName = ""; 
+        let currentResultRole = ""; // 新增：儲存頭銜
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
@@ -1245,7 +1246,9 @@
             const randomIndex = Math.floor(Math.random() * categoryArray.length);
             const res = categoryArray[randomIndex];
 
-            currentResultName = res.name; // 更新全域變數供分享使用
+            // 儲存結果供分享使用
+            currentResultName = res.name; 
+            currentResultRole = res.role;
 
             document.getElementById('resultName').innerText = res.name;
             document.getElementById('resultImage').src = res.img;
@@ -1269,7 +1272,8 @@
         // --- 分享功能 ---
         function shareToLine() {
             const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
+            // 組合：我的靈魂旅伴是 [頭銜] - [名字]
+            const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultRole} - ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
             window.open(`https://line.me/R/msg/text/?${text}%0D%0A${url}`);
         }
 
