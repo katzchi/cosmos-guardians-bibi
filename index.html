@@ -640,6 +640,7 @@
             const res = categoryArray[randomIndex];
             currentResultName = res.name; 
             currentResultRole = res.role;
+            const shortName = res.name.split(' ')[0];
             document.getElementById('resultName').innerText = res.name;
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
@@ -650,6 +651,7 @@
                 btnLink.style.display = 'inline-block';
                 txtComing.style.display = 'none';
                 btnLink.href = res.link;
+                btnLink.innerText = "前往" + shortName + "的藏身之處";
                 btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處_結果頁");
             } else {
                 btnLink.style.display = 'none';
