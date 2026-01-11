@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://cosmosbibi.katzchi.com/">
     <meta property="og:title" content="Cosmos Guardians | 旅途中的靈魂夥伴">
     <meta property="og:description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。">
-    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG_v2.png">
+    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -508,12 +508,13 @@
             color: var(--primary-gold);
         }
 
+        /* 結果頁圖片：大頭照特寫設定 */
         .result-img {
             width: 180px;
             height: 180px;
             border-radius: 50%;
             object-fit: cover;
-            object-position: center; /* 修正為置中 */
+            object-position: center; 
             border: 3px solid var(--primary-gold);
             margin: 20px auto;
         }
@@ -1102,8 +1103,11 @@
     </div>
 
     <script>
-        // Web Apps Script 網址
+        // 【重要】請確認此網址正確無誤 (您提供的那串)
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
+
+        // 產生唯一 Session ID (識別碼)，用來串聯使用者的所有動作
+        const sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
@@ -1122,7 +1126,7 @@
             });
         });
 
-        // 遊戲資料
+        // 遊戲資料 (8題)
         const questions = [
             { text: "Q1. 終於抵達飯店放下行李，你的第一個動作是？", options: [{ text: "立刻搜尋附近的隱藏版美食", type: "foodie" }, { text: "換上浴袍，躺在床上發呆", type: "chill" }, { text: "仔細閱讀飯店指南與設施地圖", type: "planner" }, { text: "直接出門，去附近的巷弄探險", type: "adventure" }] },
             { text: "Q2. 旅行中最讓你崩潰的事情是？", options: [{ text: "踩雷吃到很難吃的東西", type: "foodie" }, { text: "行程太趕，累得像行軍", type: "chill" }, { text: "交通延誤或計畫被打亂", type: "planner" }, { text: "一整天都待在室內沒出門", type: "adventure" }] },
@@ -1134,6 +1138,7 @@
             { text: "Q8. 2026年，你最想獲得的能量是？", options: [{ text: "富足與滿足感", type: "foodie" }, { text: "內心的平靜與療癒", type: "chill" }, { text: "智慧與長遠的眼光", type: "planner" }, { text: "突破現狀的勇氣", type: "adventure" }] }
         ];
 
+        // 18 隻角色資料 (png版)
         const results = {
             // 美食與享樂組
             foodie: [
@@ -1147,7 +1152,7 @@
                 { name: "樹比 Treebby", role: "森林智者", img: "head_treebby.png", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "舞比 Flibby", role: "光影捕手", img: "head_flibby.png", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "栗比 Libby", role: "森之探險家", img: "head_libby.png", desc: "你喜歡舒適愜意的氛圍，享受被照顧的感覺。調皮又貼心的栗比，將在豪華露營的星空下，為你帶來意想不到的驚喜。", link: "https://bonchillglamping.com.tw/" },
-                { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, 
+                { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
                 { name: "Q比 Q Bee", role: "歸巢守護者", img: "head_qbee.png", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
             // 智慧與策劃組
@@ -1163,7 +1168,7 @@
                 { name: "嗚比 Wubby", role: "時空旅人", img: "head_wubby.png", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
                 { name: "錨比 Ankabby", role: "港都領航員", img: "head_ankabby.png", desc: "你擁有領航員般的勇氣與視野。錨比象徵著港都的豪邁，他鼓勵你勇敢掌舵，在人生的航道上乘風破浪。", link: "https://www.cosmos-oasis-voyage.com.tw/" },
                 { name: "角比 Jiaobby", role: "盛夏發現者", img: "head_jiaobby.png", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
-                { name: "歐比 Oubby", role: "自由海洋之翼", img: "head_oubby.png", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } 
+                { name: "歐比 Oubby", role: "自由海洋之翼", img: "head_oubby.png", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } // 曉琉球
             ]
         };
 
@@ -1174,12 +1179,26 @@
 
         // --- 傳送資料到 Google Sheet 的函式 ---
         function sendDataToSheet(resultName, actionType) {
+            // 如果網址還沒設定，就不執行 (避免錯誤)
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
 
-            fetch(YOUR_GOOGLE_SCRIPT_URL + "?resultName=" + encodeURIComponent(resultName) + "&actionType=" + encodeURIComponent(actionType), {
-                method: "POST",
+            // 傳送時帶上 sessionID
+            const timestamp = new Date().getTime();
+            const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
+                             "?resultName=" + encodeURIComponent(resultName) + 
+                             "&actionType=" + encodeURIComponent(actionType) +
+                             "&sessionID=" + encodeURIComponent(sessionID) +
+                             "&t=" + timestamp;
+            
+            // 使用 fetch 發送 GET 請求
+            fetch(finalUrl, {
+                method: "GET",
                 mode: "no-cors"
-            }).catch(error => console.error('Error:', error));
+            }).then(() => {
+                console.log("Data sent to sheet:", resultName, actionType);
+            }).catch(err => {
+                console.error("Sending failed:", err);
+            });
         }
 
         function openGameModal() {
@@ -1267,7 +1286,7 @@
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
 
-            // 紀錄使用者完成測驗
+            // 紀錄使用者完成測驗 (傳送 Session ID)
             sendDataToSheet(res.name, "完成測驗");
 
             const btnLink = document.getElementById('resultLink');
@@ -1277,6 +1296,7 @@
                 btnLink.style.display = 'inline-block';
                 txtComing.style.display = 'none';
                 btnLink.href = res.link;
+                // 點擊事件也傳送數據
                 btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處");
             } else {
                 btnLink.style.display = 'none';
