@@ -1097,21 +1097,27 @@
                     </div>
                 </div>
 
-                <button class="game-btn" onclick="sendDataToSheet(currentResultName, '動作_再玩一次'); setTimeout(startGame, 300);" style="margin-top:20px; border-color: #666; color: #888;">再測一次</button>
+                <button class="game-btn" onclick="quizRound++; sendDataToSheet(currentResultName, '動作_再玩一次'); setTimeout(startGame, 300);" style="margin-top:20px; border-color: #666; color: #888;">再測一次</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Google Apps Script 網址
+        // 【重要】請確認此網址正確無誤
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
 
-        // 產生唯一 Session ID (識別碼)
+        // 【修改】嘗試從瀏覽器記憶取出 ID，如果沒有才產生新的 (永久鎖定使用者)
         let sessionID = localStorage.getItem('cosmos_guardian_uid');
+
         if (!sessionID) {
+            // 如果是新客人，產生一組新的 ID
             sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+            // 把這組 ID 存進瀏覽器，下次來直接用
             localStorage.setItem('cosmos_guardian_uid', sessionID);
         }
+
+        // 【新增】回合計數器，預設為第 1 次
+        let quizRound = 1; 
 
         // 記錄網頁載入時間
         const pageLoadTime = new Date().getTime();
@@ -1121,27 +1127,40 @@
         // 偵測裝置類型
         function getDevicePlatform() {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            if (/windows phone/i.test(userAgent)) return "Windows Phone";
-            if (/android/i.test(userAgent)) return "Android";
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
+
+            if (/windows phone/i.test(userAgent)) {
+                return "Windows Phone";
+            }
+
+            if (/android/i.test(userAgent)) {
+                return "Android";
+            }
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return "iOS";
+            }
+
             return "PC/Desktop";
         }
 
         // --- 傳送資料到 Google Sheet 的函式 ---
         function sendDataToSheet(resultName, actionType) {
+            // 避免測試時誤傳
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
 
             // 1. 抓取網址參數 (優先抓 ref=qrcode，沒有的話抓 source)
             const urlParams = new URLSearchParams(window.location.search);
-            const source = urlParams.get('ref') || urlParams.get('source') || 'direct';
+            const source = urlParams.get('ref') || urlParams.get('source') || 'direct'; // 優先讀取 ref
 
-            // 2. 計算停留時間與歷程
+            // 傳送時帶上 sessionID, device, source
             const timestamp = new Date().getTime();
             const device = getDevicePlatform();
+            // 計算停留時間 (秒)
             const duration = Math.round((timestamp - pageLoadTime) / 1000);
             
             // 只有在完成測驗時才傳送歷程，其他時候傳空字串以免混淆
-            const choicesStr = (actionType === "完成測驗") ? userChoices.join('|') : "";
+            // 注意：這裡 actionType 包含了 "完成測驗 (第X次)"，所以用 includes 來判斷
+            const choicesStr = (actionType.includes("完成測驗")) ? userChoices.join('|') : "";
 
             const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
                              "?resultName=" + encodeURIComponent(resultName) + 
@@ -1153,39 +1172,53 @@
                              "&duration=" + duration +
                              "&t=" + timestamp;
             
-            fetch(finalUrl, { method: "GET", mode: "no-cors" })
-                .then(() => console.log("Data sent:", actionType))
-                .catch(err => console.error("Sending failed:", err));
+            // 使用 fetch 發送 GET 請求
+            fetch(finalUrl, {
+                method: "GET",
+                mode: "no-cors"
+            }).then(() => {
+                console.log("Data sent:", resultName, actionType, source);
+            }).catch(err => {
+                console.error("Sending failed:", err);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
             cards.forEach(card => {
+                // 1. 取得該卡片角色的名字 (用於數據追蹤)
                 const nameText = card.querySelector('.card-back h3').innerText;
-                const locationLink = card.querySelector('.location a');
                 
+                // 2. 針對「前往藏身處」連結加入追蹤
+                const locationLink = card.querySelector('.location a');
                 if (locationLink) {
                     locationLink.addEventListener('click', (e) => {
+                        // 阻止事件冒泡，避免點連結時卡片翻回去
                         e.stopPropagation(); 
                         sendDataToSheet(nameText, "點擊_前往藏身處_卡片");
                     });
                 }
 
+                // 3. 卡片翻轉點擊事件
                 card.addEventListener('click', () => {
                     const isOpen = card.classList.contains('flipped');
                     const currentlyOpen = document.querySelector('.card-container.flipped');
                     
                     if (currentlyOpen && currentlyOpen !== card) {
+                        // 關閉別張，打開這張
                         currentlyOpen.classList.remove('flipped');
                         setTimeout(() => { 
                             card.classList.add('flipped'); 
+                            // 這裡也是翻開，加入追蹤
                             sendDataToSheet(nameText, "翻閱卡片");
                         }, 200);
                     } else {
+                        // Toggle 當前這張
                         if (isOpen) { 
                             card.classList.remove('flipped'); 
                         } else { 
                             card.classList.add('flipped'); 
+                            // 翻開時追蹤
                             sendDataToSheet(nameText, "翻閱卡片");
                         }
                     }
@@ -1193,7 +1226,7 @@
             });
         });
 
-        // 遊戲資料
+        // 遊戲資料 (8題)
         const questions = [
             { text: "Q1. 終於抵達飯店放下行李，你的第一個動作是？", options: [{ text: "立刻搜尋附近的隱藏版美食", type: "foodie" }, { text: "換上浴袍，躺在床上發呆", type: "chill" }, { text: "仔細閱讀飯店指南與設施地圖", type: "planner" }, { text: "直接出門，去附近的巷弄探險", type: "adventure" }] },
             { text: "Q2. 旅行中最讓你崩潰的事情是？", options: [{ text: "踩雷吃到很難吃的東西", type: "foodie" }, { text: "行程太趕，累得像行軍", type: "chill" }, { text: "交通延誤或計畫被打亂", type: "planner" }, { text: "一整天都待在室內沒出門", type: "adventure" }] },
@@ -1205,14 +1238,16 @@
             { text: "Q8. 2026年，你最想獲得的能量是？", options: [{ text: "富足與滿足感", type: "foodie" }, { text: "內心的平靜與療癒", type: "chill" }, { text: "智慧與長遠的眼光", type: "planner" }, { text: "突破現狀的勇氣", type: "adventure" }] }
         ];
 
-        // 18 隻角色資料
+        // 18 隻角色資料 (png版 + 正確分類 + 曉琉球空連結)
         const results = {
+            // 美食與享樂組 (含呱比)
             foodie: [
                 { name: "柚比 Yuzubby", role: "味覺煉金術師", img: "head_yuzubby.png", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
                 { name: "啾比 Jubee", role: "美食尋訪者", img: "head_jubee.png", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
                 { name: "花比 Hanabby", role: "城市暖光", img: "head_hanabby.png", desc: "你是朋友眼中溫暖的小太陽，喜歡熱鬧與分享。就像城市暖光花比一樣，用微笑融化陌生感，享受人與人之間最真誠的互動。", link: "https://www.taipeigarden.com.tw/" },
                 { name: "呱比 Guabby", role: "歡愉策展人", img: "head_guabby.png", desc: "你講究生活品味，是天生的策展人。對你來說，旅行就是一場流動的饗宴。呱比優雅的身影，正邀請你共赴一場盛大的慶祝。", link: "https://www.cosmos-ticc.com.tw/" }
             ],
+            // 療癒與自然組
             chill: [
                 { name: "樹比 Treebby", role: "森林智者", img: "head_treebby.png", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "舞比 Flibby", role: "光影捕手", img: "head_flibby.png", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
@@ -1220,12 +1255,14 @@
                 { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, 
                 { name: "Q比 Q Bee", role: "歸巢守護者", img: "head_qbee.png", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
+            // 智慧與策劃組 (含鵲比)
             planner: [
                 { name: "睿比 Ruibby", role: "智慧領航者", img: "head_ruibby.png", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
                 { name: "寶比 Baobby", role: "記憶守密人", img: "head_baobby.png", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
                 { name: "鵲比 Chiuebby", role: "果嶺上的優雅", img: "head_chiuebby.png", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
                 { name: "乳比 Rubby", role: "城堡築夢師", img: "head_rubby.png", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
             ],
+            // 冒險與自由組 (含角比)
             adventure: [
                 { name: "嘟比 Dobby", role: "山林原生力", img: "head_dobby.png", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
                 { name: "嗚比 Wubby", role: "時空旅人", img: "head_wubby.png", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
@@ -1239,6 +1276,46 @@
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
         let currentResultName = ""; 
         let currentResultRole = "";
+
+        // --- 傳送資料到 Google Sheet 的函式 ---
+        function sendDataToSheet(resultName, actionType) {
+            // 避免測試時誤傳
+            if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
+
+            // 1. 抓取網址參數 (優先抓 ref=qrcode，沒有的話抓 source)
+            const urlParams = new URLSearchParams(window.location.search);
+            const source = urlParams.get('ref') || urlParams.get('source') || 'direct'; // 優先讀取 ref
+
+            // 傳送時帶上 sessionID, device, source
+            const timestamp = new Date().getTime();
+            const device = getDevicePlatform();
+            // 計算停留時間 (秒)
+            const duration = Math.round((timestamp - pageLoadTime) / 1000);
+            
+            // 只有在完成測驗時才傳送歷程，其他時候傳空字串以免混淆
+            // 注意：這裡 actionType 包含了 "完成測驗 (第X次)"，所以用 includes 來判斷
+            const choicesStr = (actionType.includes("完成測驗")) ? userChoices.join('|') : "";
+
+            const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
+                             "?resultName=" + encodeURIComponent(resultName) + 
+                             "&actionType=" + encodeURIComponent(actionType) +
+                             "&sessionID=" + encodeURIComponent(sessionID) +
+                             "&device=" + encodeURIComponent(device) +
+                             "&source=" + encodeURIComponent(source) +
+                             "&choices=" + encodeURIComponent(choicesStr) +
+                             "&duration=" + duration +
+                             "&t=" + timestamp;
+            
+            // 使用 fetch 發送 GET 請求
+            fetch(finalUrl, {
+                method: "GET",
+                mode: "no-cors"
+            }).then(() => {
+                console.log("Data sent:", resultName, actionType, source);
+            }).catch(err => {
+                console.error("Sending failed:", err);
+            });
+        }
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
@@ -1329,8 +1406,8 @@
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
 
-            // 紀錄使用者完成測驗 (傳送 Session ID 與歷程)
-            sendDataToSheet(res.name, "完成測驗");
+            // 【重點修改】紀錄使用者完成測驗 (加上次數標記)
+            sendDataToSheet(res.name, "完成測驗 (第" + quizRound + "次)");
 
             const btnLink = document.getElementById('resultLink');
             const txtComing = document.getElementById('resultComingSoon');
@@ -1339,6 +1416,7 @@
                 btnLink.style.display = 'inline-block';
                 txtComing.style.display = 'none';
                 btnLink.href = res.link;
+                // 點擊事件也傳送數據
                 btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處_結果頁");
             } else {
                 btnLink.style.display = 'none';
