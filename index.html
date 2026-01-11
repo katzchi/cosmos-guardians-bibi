@@ -106,6 +106,26 @@
       const GA4_MEASUREMENT_ID = 'G-NW4LGRWSGG'; 
       gtag('config', GA4_MEASUREMENT_ID);
     </script>
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    const META_PIXEL_ID = '1831328167521440'; 
+    
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_META_PIXEL_ID&ev=PageView&noscript=1"
+    /></noscript>
+
 </head>
 <body>
 
@@ -477,45 +497,61 @@
             return "PC/Desktop";
         }
 
-        // --- GA4 事件自動對應函式 ---
-        function sendToGA4(actionType, resultName, extraInfo = {}) {
-            if (typeof gtag !== 'function') return;
+        // --- 全能發訊器：同步發送 GA4 和 Meta Pixel ---
+        function sendToMarketingTags(actionType, resultName) {
+            
+            // 1. 發送給 GA4
+            if (typeof gtag === 'function') {
+                let eventName = 'custom_action';
+                let params = { 
+                    event_category: 'CosmosGame',
+                    event_label: resultName
+                };
 
-            let eventName = 'custom_action';
-            let params = { 
-                event_category: 'CosmosGame',
-                event_label: resultName,
-                ...extraInfo
-            };
-
-            // 自動對應事件名稱
-            if (actionType.includes("完成測驗")) {
-                eventName = 'campaign_conversion'; // 標記為轉換
-                params.action = 'quiz_complete';
-                params.round = quizRound;
-                params.character = resultName;
-            } else if (actionType.includes("翻閱卡片")) {
-                eventName = 'view_item';
-                params.item_name = resultName;
-            } else if (actionType.includes("點擊_前往")) {
-                eventName = 'select_content';
-                params.content_type = 'hotel_link';
-                params.item_id = resultName;
-            } else if (actionType.includes("再玩一次")) {
-                eventName = 'level_retry';
-                params.round = quizRound;
-            } else if (actionType.includes("分享")) {
-                eventName = 'share';
-                params.method = actionType.split('_')[1] || 'other';
-                params.content_id = resultName;
+                if (actionType.includes("完成測驗")) {
+                    eventName = 'campaign_conversion'; 
+                    params.action = 'quiz_complete';
+                    params.round = quizRound;
+                    params.character = resultName;
+                } else if (actionType.includes("翻閱卡片")) {
+                    eventName = 'view_item';
+                    params.item_name = resultName;
+                } else if (actionType.includes("點擊_前往")) {
+                    eventName = 'select_content';
+                    params.content_type = 'hotel_link';
+                    params.item_id = resultName;
+                } else if (actionType.includes("再玩一次")) {
+                    eventName = 'level_retry';
+                    params.round = quizRound;
+                } else if (actionType.includes("分享")) {
+                    eventName = 'share';
+                    params.method = actionType.split('_')[1] || 'other';
+                    params.content_id = resultName;
+                }
+                gtag('event', eventName, params);
             }
 
-            gtag('event', eventName, params);
+            // 2. 發送給 Meta Pixel (Facebook)
+            if (typeof fbq === 'function') {
+                if (actionType.includes("完成測驗")) {
+                    // 把「完成測驗」當作「完成註冊」
+                    fbq('track', 'CompleteRegistration', {
+                        content_name: resultName, 
+                        status: 'quiz_completed'
+                    });
+                } else if (actionType.includes("點擊_前往")) {
+                    // 當作「潛在客戶」
+                    fbq('track', 'Lead', {
+                        content_name: resultName,
+                        content_category: 'hotel_link'
+                    });
+                }
+            }
         }
 
         function sendDataToSheet(resultName, actionType) {
-            // 同步發送給 GA4
-            sendToGA4(actionType, resultName);
+            // 同步發送給所有行銷工具
+            sendToMarketingTags(actionType, resultName);
 
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
             const urlParams = new URLSearchParams(window.location.search);
