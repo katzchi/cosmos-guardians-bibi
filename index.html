@@ -96,6 +96,16 @@
         @media (max-width: 1200px) { .hero h1 { font-size: 2.8rem; } .characters { grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 60px 4%; } }
         @media (max-width: 768px) { .hero-logo { width: 140px; margin-bottom: 40px; } .hero { background-attachment: scroll; } .hero h1 { font-size: 2.2rem; margin-bottom: 15px; } .hero p.sub-title { font-size: 1rem; padding: 15px 10px; margin-bottom: 5px; } .hero p.sub-title-extra { font-size: 0.9rem; margin-top: 15px; margin-bottom: 30px; } .intro { padding: 60px 20px; } .intro h2 { font-size: 1.6rem; } .text-desktop { display: none; } .text-mobile { display: block; } .characters { grid-template-columns: 1fr; padding: 40px 20px; gap: 50px; } .card-container { width: 100%; max-width: 400px; margin: 0 auto; height: 560px; } .collection h2 { font-size: 1.8rem; } .cta-group { flex-direction: column; gap: 15px; } .btn-cta { width: 100%; text-align: center; } .mobile-break { display: block; margin-top: 5px; } }
     </style>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      
+      const GA4_MEASUREMENT_ID = 'G-NW4LGRWSGG'; 
+      gtag('config', GA4_MEASUREMENT_ID);
+    </script>
 </head>
 <body>
 
@@ -256,7 +266,7 @@
                     <h3>嘟比 Dobby</h3>
                     <div class="role">山林原生力 | The Wild Spirit</div>
                     <div class="location"><span class="label">📍 藏身於</span><a href="https://www.sundialogue-hotel.com.tw/" target="_blank"><span class="loc-cn">天成文旅-繪日之丘</span><span class="loc-en">Sun Dialogue by Cosmos Creation</span></a></div>
-                    <p>擁有堅強意志力的山豬，象徵著原住民樂觀開朗的天性。嘟比帶領旅人放慢腳步，在繪日之丘感受最純粹的生命力。</p>
+                    <p>擁有堅強意志力的山豬，象徵著原住民樂觀開朗的天性。嘟比帶領旅人放慢腳步，在阿里山腳下感受最純粹的生命力。</p>
                     <div class="whisper">「感受心跳與大地的共鳴。」</div>
                 </div>
             </div>
@@ -467,7 +477,46 @@
             return "PC/Desktop";
         }
 
+        // --- GA4 事件自動對應函式 ---
+        function sendToGA4(actionType, resultName, extraInfo = {}) {
+            if (typeof gtag !== 'function') return;
+
+            let eventName = 'custom_action';
+            let params = { 
+                event_category: 'CosmosGame',
+                event_label: resultName,
+                ...extraInfo
+            };
+
+            // 自動對應事件名稱
+            if (actionType.includes("完成測驗")) {
+                eventName = 'campaign_conversion'; // 標記為轉換
+                params.action = 'quiz_complete';
+                params.round = quizRound;
+                params.character = resultName;
+            } else if (actionType.includes("翻閱卡片")) {
+                eventName = 'view_item';
+                params.item_name = resultName;
+            } else if (actionType.includes("點擊_前往")) {
+                eventName = 'select_content';
+                params.content_type = 'hotel_link';
+                params.item_id = resultName;
+            } else if (actionType.includes("再玩一次")) {
+                eventName = 'level_retry';
+                params.round = quizRound;
+            } else if (actionType.includes("分享")) {
+                eventName = 'share';
+                params.method = actionType.split('_')[1] || 'other';
+                params.content_id = resultName;
+            }
+
+            gtag('event', eventName, params);
+        }
+
         function sendDataToSheet(resultName, actionType) {
+            // 同步發送給 GA4
+            sendToGA4(actionType, resultName);
+
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
             const urlParams = new URLSearchParams(window.location.search);
             const source = urlParams.get('ref') || urlParams.get('source') || 'direct';
