@@ -1103,78 +1103,67 @@
     </div>
 
     <script>
-        // 【重要】請確認此網址正確無誤
+        // Google Apps Script 網址
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
 
-        // 【修改】嘗試從瀏覽器記憶取出 ID，如果沒有才產生新的 (永久鎖定使用者)
+        // 產生唯一 Session ID (識別碼)
         let sessionID = localStorage.getItem('cosmos_guardian_uid');
-
         if (!sessionID) {
-            // 如果是新客人，產生一組新的 ID
             sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-            // 把這組 ID 存進瀏覽器，下次來直接用
             localStorage.setItem('cosmos_guardian_uid', sessionID);
         }
+
+        // 記錄網頁載入時間
+        const pageLoadTime = new Date().getTime();
+        // 記錄測驗選擇歷程
+        let userChoices = [];
 
         // 偵測裝置類型
         function getDevicePlatform() {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-            if (/windows phone/i.test(userAgent)) {
-                return "Windows Phone";
-            }
-
-            if (/android/i.test(userAgent)) {
-                return "Android";
-            }
-
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return "iOS";
-            }
-
+            if (/windows phone/i.test(userAgent)) return "Windows Phone";
+            if (/android/i.test(userAgent)) return "Android";
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
             return "PC/Desktop";
         }
 
         // --- 傳送資料到 Google Sheet 的函式 ---
         function sendDataToSheet(resultName, actionType) {
-            // 避免測試時誤傳
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
 
             // 1. 抓取網址參數 (優先抓 ref=qrcode，沒有的話抓 source)
             const urlParams = new URLSearchParams(window.location.search);
-            const source = urlParams.get('ref') || urlParams.get('source') || 'direct'; // 優先讀取 ref
+            const source = urlParams.get('ref') || urlParams.get('source') || 'direct';
 
-            // 傳送時帶上 sessionID, device, source
+            // 2. 計算停留時間與歷程
             const timestamp = new Date().getTime();
             const device = getDevicePlatform();
+            const duration = Math.round((timestamp - pageLoadTime) / 1000);
             
+            // 只有在完成測驗時才傳送歷程，其他時候傳空字串以免混淆
+            const choicesStr = (actionType === "完成測驗") ? userChoices.join('|') : "";
+
             const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
                              "?resultName=" + encodeURIComponent(resultName) + 
                              "&actionType=" + encodeURIComponent(actionType) +
                              "&sessionID=" + encodeURIComponent(sessionID) +
                              "&device=" + encodeURIComponent(device) +
                              "&source=" + encodeURIComponent(source) +
+                             "&choices=" + encodeURIComponent(choicesStr) +
+                             "&duration=" + duration +
                              "&t=" + timestamp;
             
-            // 使用 fetch 發送 GET 請求
-            fetch(finalUrl, {
-                method: "GET",
-                mode: "no-cors"
-            }).then(() => {
-                console.log("Data sent:", resultName, actionType, source);
-            }).catch(err => {
-                console.error("Sending failed:", err);
-            });
+            fetch(finalUrl, { method: "GET", mode: "no-cors" })
+                .then(() => console.log("Data sent:", actionType))
+                .catch(err => console.error("Sending failed:", err));
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
             cards.forEach(card => {
-                // 1. 取得該卡片角色的名字 (用於數據追蹤)
                 const nameText = card.querySelector('.card-back h3').innerText;
-                
-                // 2. 針對「前往藏身處」連結加入追蹤
                 const locationLink = card.querySelector('.location a');
+                
                 if (locationLink) {
                     locationLink.addEventListener('click', (e) => {
                         e.stopPropagation(); 
@@ -1182,7 +1171,6 @@
                     });
                 }
 
-                // 3. 卡片翻轉點擊事件
                 card.addEventListener('click', () => {
                     const isOpen = card.classList.contains('flipped');
                     const currentlyOpen = document.querySelector('.card-container.flipped');
@@ -1205,7 +1193,7 @@
             });
         });
 
-        // 遊戲資料 (8題)
+        // 遊戲資料
         const questions = [
             { text: "Q1. 終於抵達飯店放下行李，你的第一個動作是？", options: [{ text: "立刻搜尋附近的隱藏版美食", type: "foodie" }, { text: "換上浴袍，躺在床上發呆", type: "chill" }, { text: "仔細閱讀飯店指南與設施地圖", type: "planner" }, { text: "直接出門，去附近的巷弄探險", type: "adventure" }] },
             { text: "Q2. 旅行中最讓你崩潰的事情是？", options: [{ text: "踩雷吃到很難吃的東西", type: "foodie" }, { text: "行程太趕，累得像行軍", type: "chill" }, { text: "交通延誤或計畫被打亂", type: "planner" }, { text: "一整天都待在室內沒出門", type: "adventure" }] },
@@ -1274,6 +1262,7 @@
         function startGame() {
             currentQuestion = 0;
             scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
+            userChoices = []; // 重置選擇歷程
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('resultScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
@@ -1300,6 +1289,9 @@
 
         function selectOption(type) {
             scores[type]++;
+            // 記錄歷程: Q1:foodie
+            userChoices.push(`Q${currentQuestion + 1}:${type}`);
+            
             currentQuestion++;
             if (currentQuestion < questions.length) {
                 document.getElementById('quizScreen').style.opacity = '0';
@@ -1337,7 +1329,7 @@
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
 
-            // 紀錄使用者完成測驗
+            // 紀錄使用者完成測驗 (傳送 Session ID 與歷程)
             sendDataToSheet(res.name, "完成測驗");
 
             const btnLink = document.getElementById('resultLink');
