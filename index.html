@@ -1116,17 +1116,38 @@
             localStorage.setItem('cosmos_guardian_uid', sessionID);
         }
 
+        // 偵測裝置類型
+        function getDevicePlatform() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/windows phone/i.test(userAgent)) {
+                return "Windows Phone";
+            }
+
+            if (/android/i.test(userAgent)) {
+                return "Android";
+            }
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return "iOS";
+            }
+
+            return "PC/Desktop";
+        }
+
         // --- 傳送資料到 Google Sheet 的函式 ---
         function sendDataToSheet(resultName, actionType) {
             // 避免測試時誤傳
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
 
-            // 傳送時帶上 sessionID
+            // 傳送時帶上 sessionID 和 device
             const timestamp = new Date().getTime();
+            const device = getDevicePlatform();
             const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
                              "?resultName=" + encodeURIComponent(resultName) + 
                              "&actionType=" + encodeURIComponent(actionType) +
                              "&sessionID=" + encodeURIComponent(sessionID) +
+                             "&device=" + encodeURIComponent(device) +
                              "&t=" + timestamp;
             
             // 使用 fetch 發送 GET 請求
@@ -1234,6 +1255,32 @@
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
         let currentResultName = ""; 
         let currentResultRole = "";
+
+        // --- 傳送資料到 Google Sheet 的函式 ---
+        function sendDataToSheet(resultName, actionType) {
+            // 避免測試時誤傳
+            if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
+
+            // 傳送時帶上 sessionID 和 device
+            const timestamp = new Date().getTime();
+            const device = getDevicePlatform();
+            const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
+                             "?resultName=" + encodeURIComponent(resultName) + 
+                             "&actionType=" + encodeURIComponent(actionType) +
+                             "&sessionID=" + encodeURIComponent(sessionID) +
+                             "&device=" + encodeURIComponent(device) +
+                             "&t=" + timestamp;
+            
+            // 使用 fetch 發送 GET 請求
+            fetch(finalUrl, {
+                method: "GET",
+                mode: "no-cors"
+            }).then(() => {
+                console.log("Data sent to sheet:", resultName, actionType);
+            }).catch(err => {
+                console.error("Sending failed:", err);
+            });
+        }
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
