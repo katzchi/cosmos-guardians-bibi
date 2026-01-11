@@ -1102,10 +1102,10 @@
     </div>
 
     <script>
-        // 【重要】請確認此網址正確無誤
+        // Google Apps Script 網址
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
 
-        // 產生唯一 Session ID (識別碼)，用來串聯使用者的所有動作
+        // 產生唯一 Session ID (識別碼)串聯使用者的所有動作
         const sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1178,7 +1178,7 @@
 
         // --- 傳送資料到 Google Sheet 的函式 ---
         function sendDataToSheet(resultName, actionType) {
-            // 如果網址還沒設定，就不執行 (避免錯誤)
+            // 避免測試時誤傳
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
 
             // 傳送時帶上 sessionID
