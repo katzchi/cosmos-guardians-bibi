@@ -7,15 +7,15 @@
     
     <title>Cosmos Guardians | 旅途中的靈魂夥伴 - 天成飯店集團</title>
 
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="favicon.png">
-
-    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
+    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG_v2.png">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cosmosbibi.katzchi.com/">
     <meta property="og:title" content="Cosmos Guardians | 旅途中的靈魂夥伴">
     <meta property="og:description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。">
-    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG.png">
+    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
+
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -508,7 +508,6 @@
             color: var(--primary-gold);
         }
 
-        /* 結果頁圖片：大頭照特寫設定 */
         .result-img {
             width: 180px;
             height: 180px;
@@ -1103,7 +1102,7 @@
     </div>
 
     <script>
-        // 【重要】請確認此網址正確無誤 (您提供的那串)
+        // 【重要】請確認此網址正確無誤
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
 
         // 產生唯一 Session ID (識別碼)，用來串聯使用者的所有動作
@@ -1138,9 +1137,9 @@
             { text: "Q8. 2026年，你最想獲得的能量是？", options: [{ text: "富足與滿足感", type: "foodie" }, { text: "內心的平靜與療癒", type: "chill" }, { text: "智慧與長遠的眼光", type: "planner" }, { text: "突破現狀的勇氣", type: "adventure" }] }
         ];
 
-        // 18 隻角色資料 (png版)
+        // 18 隻角色資料 (png版 + 正確分類 + 曉琉球空連結)
         const results = {
-            // 美食與享樂組
+            // 美食與享樂組 (包含呱比)
             foodie: [
                 { name: "柚比 Yuzubby", role: "味覺煉金術師", img: "head_yuzubby.png", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
                 { name: "啾比 Jubee", role: "美食尋訪者", img: "head_jubee.png", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
@@ -1152,23 +1151,23 @@
                 { name: "樹比 Treebby", role: "森林智者", img: "head_treebby.png", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "舞比 Flibby", role: "光影捕手", img: "head_flibby.png", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "栗比 Libby", role: "森之探險家", img: "head_libby.png", desc: "你喜歡舒適愜意的氛圍，享受被照顧的感覺。調皮又貼心的栗比，將在豪華露營的星空下，為你帶來意想不到的驚喜。", link: "https://bonchillglamping.com.tw/" },
-                { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
+                { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, 
                 { name: "Q比 Q Bee", role: "歸巢守護者", img: "head_qbee.png", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
-            // 智慧與策劃組
+            // 智慧與策劃組 (包含鵲比)
             planner: [
                 { name: "睿比 Ruibby", role: "智慧領航者", img: "head_ruibby.png", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
                 { name: "寶比 Baobby", role: "記憶守密人", img: "head_baobby.png", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
                 { name: "鵲比 Chiuebby", role: "果嶺上的優雅", img: "head_chiuebby.png", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
                 { name: "乳比 Rubby", role: "城堡築夢師", img: "head_rubby.png", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
             ],
-            // 冒險與自由組
+            // 冒險與自由組 (包含角比)
             adventure: [
                 { name: "嘟比 Dobby", role: "山林原生力", img: "head_dobby.png", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
                 { name: "嗚比 Wubby", role: "時空旅人", img: "head_wubby.png", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
                 { name: "錨比 Ankabby", role: "港都領航員", img: "head_ankabby.png", desc: "你擁有領航員般的勇氣與視野。錨比象徵著港都的豪邁，他鼓勵你勇敢掌舵，在人生的航道上乘風破浪。", link: "https://www.cosmos-oasis-voyage.com.tw/" },
                 { name: "角比 Jiaobby", role: "盛夏發現者", img: "head_jiaobby.png", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
-                { name: "歐比 Oubby", role: "自由海洋之翼", img: "head_oubby.png", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } // 曉琉球
+                { name: "歐比 Oubby", role: "自由海洋之翼", img: "head_oubby.png", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } 
             ]
         };
 
