@@ -508,6 +508,7 @@
             color: var(--primary-gold);
         }
 
+        /* 結果頁圖片：大頭照特寫設定 */
         .result-img {
             width: 180px;
             height: 180px;
@@ -1356,20 +1357,32 @@
 
         function shareToLine() {
             sendDataToSheet(currentResultName, "分享_Line");
-            const url = encodeURIComponent(window.location.href);
+            
+            // 建立乾淨的分享連結 (只帶 source 參數)
+            const cleanUrl = window.location.origin + window.location.pathname + "?source=share_line";
+            const encodedUrl = encodeURIComponent(cleanUrl);
+            
             const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultRole} - ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
-            window.open(`https://line.me/R/msg/text/?${text}%0D%0A${url}`);
+            window.open(`https://line.me/R/msg/text/?${text}%0D%0A${encodedUrl}`);
         }
 
         function shareToFB() {
             sendDataToSheet(currentResultName, "分享_Facebook");
-            const url = encodeURIComponent(window.location.href);
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
+            
+            // 建立乾淨的分享連結 (只帶 source 參數)
+            const cleanUrl = window.location.origin + window.location.pathname + "?source=share_facebook";
+            const encodedUrl = encodeURIComponent(cleanUrl);
+            
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`);
         }
 
         function copyLink() {
             sendDataToSheet(currentResultName, "動作_複製連結");
-            navigator.clipboard.writeText(window.location.href).then(() => {
+            
+            // 複製時也給帶參數的連結
+            const cleanUrl = window.location.origin + window.location.pathname + "?source=share_copy";
+            
+            navigator.clipboard.writeText(cleanUrl).then(() => {
                 alert("連結已複製！");
             });
         }
