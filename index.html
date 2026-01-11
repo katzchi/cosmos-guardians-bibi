@@ -508,14 +508,12 @@
             color: var(--primary-gold);
         }
 
-        /* 結果頁圖片樣式 (特寫圓圖) */
         .result-img {
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            /* 修正：裁切正方形頭像直接置中顯示 */
             object-fit: cover;
-            object-position: center; 
+            object-position: center; /* 修正為置中 */
             border: 3px solid var(--primary-gold);
             margin: 20px auto;
         }
@@ -1104,6 +1102,9 @@
     </div>
 
     <script>
+        // Web Apps Script 網址
+        const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
+
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
             cards.forEach(card => {
@@ -1146,7 +1147,7 @@
                 { name: "樹比 Treebby", role: "森林智者", img: "head_treebby.png", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "舞比 Flibby", role: "光影捕手", img: "head_flibby.png", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "栗比 Libby", role: "森之探險家", img: "head_libby.png", desc: "你喜歡舒適愜意的氛圍，享受被照顧的感覺。調皮又貼心的栗比，將在豪華露營的星空下，為你帶來意想不到的驚喜。", link: "https://bonchillglamping.com.tw/" },
-                { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, // 曉琉球
+                { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, 
                 { name: "Q比 Q Bee", role: "歸巢守護者", img: "head_qbee.png", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
             // 智慧與策劃組
@@ -1162,7 +1163,7 @@
                 { name: "嗚比 Wubby", role: "時空旅人", img: "head_wubby.png", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
                 { name: "錨比 Ankabby", role: "港都領航員", img: "head_ankabby.png", desc: "你擁有領航員般的勇氣與視野。錨比象徵著港都的豪邁，他鼓勵你勇敢掌舵，在人生的航道上乘風破浪。", link: "https://www.cosmos-oasis-voyage.com.tw/" },
                 { name: "角比 Jiaobby", role: "盛夏發現者", img: "head_jiaobby.png", desc: "你的好奇心旺盛，哪裡好玩就往哪裡鑽！角比頭頂的觸角正與你產生共鳴，提醒你保持童心，世界就是你的遊樂場。", link: "https://www.tygc.com.tw/" },
-                { name: "歐比 Oubby", role: "自由海洋之翼", img: "head_oubby.png", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } // 曉琉球
+                { name: "歐比 Oubby", role: "自由海洋之翼", img: "head_oubby.png", desc: "你渴望掙脫束縛，像海龜一樣在湛藍中自由飛翔。歐比告訴你：「心若自由，哪裡都是天空。」去追逐那份無拘無束吧！", link: "" } 
             ]
         };
 
@@ -1170,6 +1171,16 @@
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
         let currentResultName = ""; 
         let currentResultRole = "";
+
+        // --- 傳送資料到 Google Sheet 的函式 ---
+        function sendDataToSheet(resultName, actionType) {
+            if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
+
+            fetch(YOUR_GOOGLE_SCRIPT_URL + "?resultName=" + encodeURIComponent(resultName) + "&actionType=" + encodeURIComponent(actionType), {
+                method: "POST",
+                mode: "no-cors"
+            }).catch(error => console.error('Error:', error));
+        }
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
@@ -1256,6 +1267,9 @@
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
 
+            // 紀錄使用者完成測驗
+            sendDataToSheet(res.name, "完成測驗");
+
             const btnLink = document.getElementById('resultLink');
             const txtComing = document.getElementById('resultComingSoon');
 
@@ -1263,6 +1277,7 @@
                 btnLink.style.display = 'inline-block';
                 txtComing.style.display = 'none';
                 btnLink.href = res.link;
+                btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處");
             } else {
                 btnLink.style.display = 'none';
                 txtComing.style.display = 'block';
@@ -1271,17 +1286,20 @@
         }
 
         function shareToLine() {
+            sendDataToSheet(currentResultName, "分享_Line");
             const url = encodeURIComponent(window.location.href);
             const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultRole} - ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
             window.open(`https://line.me/R/msg/text/?${text}%0D%0A${url}`);
         }
 
         function shareToFB() {
+            sendDataToSheet(currentResultName, "分享_Facebook");
             const url = encodeURIComponent(window.location.href);
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
         }
 
         function copyLink() {
+            sendDataToSheet(currentResultName, "動作_複製連結");
             navigator.clipboard.writeText(window.location.href).then(() => {
                 alert("連結已複製！");
             });
