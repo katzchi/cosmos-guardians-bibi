@@ -7,15 +7,15 @@
     
     <title>Cosmos Guardians | 旅途中的靈魂夥伴 - 天成飯店集團</title>
 
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="favicon.png">
-
-    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
+    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG_v2.png">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cosmosbibi.katzchi.com/">
     <meta property="og:title" content="Cosmos Guardians | 旅途中的靈魂夥伴">
     <meta property="og:description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。">
-    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG_v2.png">
+    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
+
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -508,6 +508,7 @@
             color: var(--primary-gold);
         }
 
+        /* 結果頁圖片：大頭照特寫設定 */
         .result-img {
             width: 180px;
             height: 180px;
@@ -1105,8 +1106,39 @@
         // 【重要】請確認此網址正確無誤
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
 
-        // 產生唯一 Session ID
-        const sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        // 【修改】嘗試從瀏覽器記憶取出 ID，如果沒有才產生新的 (永久鎖定使用者)
+        let sessionID = localStorage.getItem('cosmos_guardian_uid');
+
+        if (!sessionID) {
+            // 如果是新客人，產生一組新的 ID
+            sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+            // 把這組 ID 存進瀏覽器，下次來直接用
+            localStorage.setItem('cosmos_guardian_uid', sessionID);
+        }
+
+        // --- 傳送資料到 Google Sheet 的函式 ---
+        function sendDataToSheet(resultName, actionType) {
+            // 避免測試時誤傳
+            if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
+
+            // 傳送時帶上 sessionID
+            const timestamp = new Date().getTime();
+            const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
+                             "?resultName=" + encodeURIComponent(resultName) + 
+                             "&actionType=" + encodeURIComponent(actionType) +
+                             "&sessionID=" + encodeURIComponent(sessionID) +
+                             "&t=" + timestamp;
+            
+            // 使用 fetch 發送 GET 請求
+            fetch(finalUrl, {
+                method: "GET",
+                mode: "no-cors"
+            }).then(() => {
+                console.log("Data sent to sheet:", resultName, actionType);
+            }).catch(err => {
+                console.error("Sending failed:", err);
+            });
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
@@ -1202,30 +1234,6 @@
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
         let currentResultName = ""; 
         let currentResultRole = "";
-
-        // --- 傳送資料到 Google Sheet 的函式 ---
-        function sendDataToSheet(resultName, actionType) {
-            // 避免測試時誤傳
-            if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
-
-            // 傳送時帶上 sessionID
-            const timestamp = new Date().getTime();
-            const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
-                             "?resultName=" + encodeURIComponent(resultName) + 
-                             "&actionType=" + encodeURIComponent(actionType) +
-                             "&sessionID=" + encodeURIComponent(sessionID) +
-                             "&t=" + timestamp;
-            
-            // 使用 fetch 發送 GET 請求
-            fetch(finalUrl, {
-                method: "GET",
-                mode: "no-cors"
-            }).then(() => {
-                console.log("Data sent to sheet:", resultName, actionType);
-            }).catch(err => {
-                console.error("Sending failed:", err);
-            });
-        }
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
