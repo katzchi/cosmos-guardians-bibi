@@ -23,583 +23,78 @@
     
     <style>
         :root {
-            --primary-gold: #C5A065; /* 天成金 */
-            --dark-bg: #1A1A1A;     /* 深邃質感黑 */
+            --primary-gold: #C5A065;
+            --dark-bg: #1A1A1A;
             --light-text: #F4F4F4;
-            --accent-city: #A64B2A;   /* 城市磚紅 */
+            --accent-city: #A64B2A;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Serif TC', serif;
-            background-color: var(--dark-bg);
-            color: var(--light-text);
-            line-height: 1.8;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            height: 100vh;
-            min-height: 600px;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-logo {
-            width: 180px; 
-            height: auto;
-            margin-bottom: 80px; 
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-            animation: fadeIn 1.5s ease-in;
-            border: none; 
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            margin-bottom: 20px;
-            color: var(--primary-gold);
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            text-transform: uppercase;
-        }
-
-        .hero p.sub-title {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 10px; 
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            border-top: 1px solid var(--primary-gold);
-            padding-top: 20px;
-        }
-
-        .hero p.sub-title-extra {
-            font-size: 1.1rem;
-            max-width: 600px;
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            margin-top: 25px; 
-            margin-bottom: 40px;
-            color: #e0e0e0; 
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            font-size: 0.8rem;
-            opacity: 0.7;
-            letter-spacing: 3px;
-            animation: bounce 2s infinite;
-        }
-
-        /* --- Story Intro --- */
-        .intro {
-            padding: 100px 20px;
-            text-align: center;
-            background-color: #222;
-            position: relative;
-            z-index: 2;
-        }
-
-        .intro h2 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: var(--primary-gold);
-            letter-spacing: 0.1em;
-        }
-
-        .text-desktop { display: block; }
-        .text-mobile { display: none; }
-
-        .intro p {
-            max-width: 700px;
-            margin: 0 auto;
-            color: #ccc;
-            font-size: 1.1rem;
-        }
-        
-        .intro .text-mobile p {
-            line-height: 2;
-            font-size: 1.05rem;
-        }
-
-        /* --- Character Grid --- */
-        .characters {
-            padding: 80px 5%;
-            background-color: var(--dark-bg);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 40px;
-            max-width: 1500px; 
-            margin: 0 auto;
-            min-height: 500px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .card-container {
-            perspective: 1000px;
-            -webkit-perspective: 1000px;
-            height: 520px;
-            cursor: pointer;
-            position: relative;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border-radius: 15px;
-            transform: translateZ(0);
-        }
-
-        .card-container.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-container:hover .card-inner {
-            box-shadow: 0 20px 40px rgba(197, 160, 101, 0.2);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-        }
-
-        .card-front {
-            background-color: #1a1a1a;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            z-index: 2;
-            transform: rotateY(0deg);
-        }
-
-        .card-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            filter: brightness(0.9);
-            transition: 0.5s;
-        }
-        
-        .card-container.flipped .card-front img {
-             filter: brightness(0.8);
-        }
-
-        .card-name-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            color: white;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8), rgba(0,0,0,0.95));
-            border-bottom: 3px solid var(--primary-gold);
-            z-index: 3;
-        }
-
-        .card-name-overlay h3 {
-            font-size: 1.5rem;
-            letter-spacing: 0.2em;
-            color: var(--primary-gold);
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .card-back {
-            background-color: #f4f1ea;
-            color: #333;
-            transform: rotateY(180deg);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: left;
-            border: 1px solid var(--primary-gold);
-            z-index: 1;
-        }
-
-        .card-back h3 {
-            font-size: 1.4rem;
-            color: var(--primary-gold);
-            margin-bottom: 5px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .card-back .role {
-            font-size: 0.75rem;
-            color: #999;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            font-family: 'Lato', sans-serif;
-            letter-spacing: 2px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .card-back .location {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            width: 100%;
-            text-align: center;
-        }
-
-        .location .label {
-            display: block;
-            font-size: 0.75rem;
-            color: #A64B2A;
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
-
-        @keyframes subtle-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); } 
-        }
-
-        .card-back .location a {
-            text-decoration: none;
-            display: block;
-            transition: all 0.3s ease;
-            animation: subtle-float 3s ease-in-out infinite;
-        }
-
-        .card-back .location a:hover {
-            animation-play-state: paused; 
-        }
-
-        .loc-cn {
-            display: block;
-            font-size: 0.95rem;
-            color: var(--accent-city);
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 2px;
-        }
-
-        .loc-en {
-            display: block;
-            font-size: 0.7rem;
-            color: #888;
-            font-family: 'Lato', sans-serif;
-            font-weight: 400;
-            line-height: 1.2;
-            transition: color 0.3s ease;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Serif TC', serif; background-color: var(--dark-bg); color: var(--light-text); line-height: 1.8; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        .hero { height: 100vh; min-height: 600px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop'); background-size: cover; background-position: center; background-attachment: fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; position: relative; z-index: 1; }
+        .hero-logo { width: 180px; height: auto; margin-bottom: 80px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); animation: fadeIn 1.5s ease-in; border: none; }
+        .hero h1 { font-size: 3.5rem; font-weight: 300; letter-spacing: 0.2em; margin-bottom: 20px; color: var(--primary-gold); text-shadow: 2px 2px 10px rgba(0,0,0,0.8); text-transform: uppercase; }
+        .hero p.sub-title { font-size: 1.2rem; max-width: 600px; margin-bottom: 10px; font-weight: 300; letter-spacing: 0.1em; border-top: 1px solid var(--primary-gold); padding-top: 20px; }
+        .hero p.sub-title-extra { font-size: 1.1rem; max-width: 600px; font-weight: 300; letter-spacing: 0.15em; margin-top: 25px; margin-bottom: 40px; color: #e0e0e0; }
+        .scroll-indicator { position: absolute; bottom: 40px; font-size: 0.8rem; opacity: 0.7; letter-spacing: 3px; animation: bounce 2s infinite; }
+        .intro { padding: 100px 20px; text-align: center; background-color: #222; position: relative; z-index: 2; }
+        .intro h2 { font-size: 2rem; margin-bottom: 30px; color: var(--primary-gold); letter-spacing: 0.1em; }
+        .text-desktop { display: block; } .text-mobile { display: none; }
+        .intro p { max-width: 700px; margin: 0 auto; color: #ccc; font-size: 1.1rem; }
+        .intro .text-mobile p { line-height: 2; font-size: 1.05rem; }
+        .characters { padding: 80px 5%; background-color: var(--dark-bg); display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1500px; margin: 0 auto; min-height: 500px; position: relative; z-index: 2; }
+        .card-container { perspective: 1000px; -webkit-perspective: 1000px; height: 520px; cursor: pointer; position: relative; -webkit-tap-highlight-color: transparent; }
+        .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border-radius: 15px; transform: translateZ(0); }
+        .card-container.flipped .card-inner { transform: rotateY(180deg); }
+        .card-container:hover .card-inner { box-shadow: 0 20px 40px rgba(197, 160, 101, 0.2); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 15px; overflow: hidden; top: 0; left: 0; }
+        .card-front { background-color: #1a1a1a; display: flex; flex-direction: column; justify-content: flex-end; z-index: 2; transform: rotateY(0deg); }
+        .card-front img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: brightness(0.9); transition: 0.5s; }
+        .card-container.flipped .card-front img { filter: brightness(0.8); }
+        .card-name-overlay { position: absolute; bottom: 0; left: 0; width: 100%; color: white; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8), rgba(0,0,0,0.95)); border-bottom: 3px solid var(--primary-gold); z-index: 3; }
+        .card-name-overlay h3 { font-size: 1.5rem; letter-spacing: 0.2em; color: var(--primary-gold); text-transform: uppercase; margin: 0; }
+        .card-back { background-color: #f4f1ea; color: #333; transform: rotateY(180deg); padding: 25px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: left; border: 1px solid var(--primary-gold); z-index: 1; }
+        .card-back h3 { font-size: 1.4rem; color: var(--primary-gold); margin-bottom: 5px; width: 100%; text-align: center; }
+        .card-back .role { font-size: 0.75rem; color: #999; text-transform: uppercase; margin-bottom: 12px; font-family: 'Lato', sans-serif; letter-spacing: 2px; text-align: center; width: 100%; }
+        .card-back .location { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd; width: 100%; text-align: center; }
+        .location .label { display: block; font-size: 0.75rem; color: #A64B2A; margin-bottom: 4px; font-weight: 500; }
+        @keyframes subtle-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        .card-back .location a { text-decoration: none; display: block; transition: all 0.3s ease; animation: subtle-float 3s ease-in-out infinite; }
+        .card-back .location a:hover { animation-play-state: paused; }
+        .loc-cn { display: block; font-size: 0.95rem; color: var(--accent-city); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+        .loc-en { display: block; font-size: 0.7rem; color: #888; font-family: 'Lato', sans-serif; font-weight: 400; line-height: 1.2; transition: color 0.3s ease; }
         .card-back .location a:hover .loc-cn { color: var(--primary-gold); }
         .card-back .location a:hover .loc-en { color: #C5A065; }
-
-        .card-back p {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 12px;
-            color: #555;
-            text-align: justify;
-        }
-
-        .card-back .whisper {
-            font-size: 1.05rem; 
-            font-style: italic;
-            color: #A64B2A;
-            background: rgba(197, 160, 101, 0.1);
-            padding: 10px;
-            border-left: 3px solid var(--primary-gold);
-            width: 100%;
-            margin-top: 10px;
-            font-weight: 500;
-        }
-
-        /* --- Collection (Bottom Section) --- */
-        .collection {
-            padding: 100px 20px;
-            background: linear-gradient(#1A1A1A, #000);
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .collection h2 {
-            color: var(--primary-gold);
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            letter-spacing: 0.1em;
-        }
-
-        /* 按鈕群組容器 */
-        .cta-group {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-            flex-wrap: wrap; 
-        }
-
-        .btn-cta {
-            display: inline-block;
-            padding: 15px 30px;
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
-            text-decoration: none;
-            transition: all 0.4s ease;
-            font-size: 1rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            cursor: pointer;
-            background: transparent;
-            font-family: 'Noto Serif TC', serif;
-        }
-
-        .btn-cta:hover {
-            background-color: var(--primary-gold);
-            color: #000;
-            box-shadow: 0 0 30px rgba(197, 160, 101, 0.4);
-        }
-
-        /* 底部文字連結 */
-        .footer-link {
-            display: inline-block;
-            margin-top: 40px;
-            color: #666; 
-            font-size: 0.9rem; 
-            text-decoration: none; 
-            border-bottom: 1px solid #666;
-            transition: color 0.3s;
-        }
+        .card-back p { font-size: 0.85rem; line-height: 1.6; margin-bottom: 12px; color: #555; text-align: justify; }
+        .card-back .whisper { font-size: 1.05rem; font-style: italic; color: #A64B2A; background: rgba(197, 160, 101, 0.1); padding: 10px; border-left: 3px solid var(--primary-gold); width: 100%; margin-top: 10px; font-weight: 500; }
+        .collection { padding: 100px 20px; background: linear-gradient(#1A1A1A, #000); text-align: center; position: relative; z-index: 2; }
+        .collection h2 { color: var(--primary-gold); font-size: 2.2rem; margin-bottom: 20px; letter-spacing: 0.1em; }
+        .cta-group { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; }
+        .btn-cta { display: inline-block; padding: 15px 30px; border: 1px solid var(--primary-gold); color: var(--primary-gold); text-decoration: none; transition: all 0.4s ease; font-size: 1rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; background: transparent; font-family: 'Noto Serif TC', serif; }
+        .btn-cta:hover { background-color: var(--primary-gold); color: #000; box-shadow: 0 0 30px rgba(197, 160, 101, 0.4); }
+        .footer-link { display: inline-block; margin-top: 40px; color: #666; font-size: 0.9rem; text-decoration: none; border-bottom: 1px solid #666; transition: color 0.3s; }
         .footer-link:hover { color: var(--primary-gold); border-color: var(--primary-gold); }
-
-        footer {
-            padding: 40px 20px;
-            background-color: #0d0d0d;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #555;
-            border-top: 1px solid #222;
-            letter-spacing: 1px;
-            line-height: 1.5;
-            position: relative;
-            z-index: 2;
-        }
-
-        .footer-logo {
-            width: 200px;
-            height: auto;
-            margin-bottom: 20px;
-            opacity: 0.9;
-            border: none;
-        }
-
-        /* =========================================
-           POPUP GAME MODAL STYLES
-           ========================================= */
-        .modal-overlay {
-            display: none; 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            width: 100%;
-            max-width: 550px;
-            background: #1a1a1a;
-            border: 1px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: 30px 30px 50px 30px; 
-            text-align: center;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 2rem;
-            color: #666;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.3s;
-        }
+        footer { padding: 40px 20px; background-color: #0d0d0d; text-align: center; font-size: 0.75rem; color: #555; border-top: 1px solid #222; letter-spacing: 1px; line-height: 1.5; position: relative; z-index: 2; }
+        .footer-logo { width: 200px; height: auto; margin-bottom: 20px; opacity: 0.9; border: none; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { width: 100%; max-width: 550px; background: #1a1a1a; border: 1px solid var(--primary-gold); border-radius: 20px; padding: 30px 30px 50px 30px; text-align: center; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.8); max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #666; cursor: pointer; line-height: 1; transition: color 0.3s; }
         .close-modal:hover { color: var(--primary-gold); }
-
-        .game-progress-bar {
-            height: 4px;
-            background-color: var(--primary-gold);
-            width: 0%;
-            margin-bottom: 20px;
-            transition: width 0.3s;
-        }
-
-        .game-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 12px;
-            background: transparent;
-            border: 1px solid rgba(197, 160, 101, 0.4); 
-            color: var(--primary-gold);
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Noto Serif TC', serif;
-            transition: all 0.3s;
-            text-align: center;
-            font-size: 1rem;
-            outline: none;
-        }
-        
-        .game-btn:hover {
-            border-color: var(--primary-gold);
-            background: rgba(197, 160, 101, 0.2); 
-            color: var(--primary-gold); 
-            box-shadow: 0 0 10px rgba(197, 160, 101, 0.1);
-        }
-        
-        .game-btn:focus {
-            background: rgba(197, 160, 101, 0.2);
-            color: var(--primary-gold);
-        }
-
-        /* 結果頁圖片：大頭照特寫設定 */
-        .result-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            object-position: center; 
-            border: 3px solid var(--primary-gold);
-            margin: 20px auto;
-        }
-        
-        /* 分享區塊樣式 */
-        .share-section {
-            margin-top: 30px;
-            border-top: 1px solid #333;
-            padding-top: 20px;
-        }
-        
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .share-btn {
-            background: transparent;
-            border: 1px solid #666;
-            color: #888;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-            font-family: 'Noto Serif TC', serif;
-        }
-        
-        .share-btn:hover {
-            border-color: var(--primary-gold);
-            color: var(--primary-gold);
-        }
-
+        .game-progress-bar { height: 4px; background-color: var(--primary-gold); width: 0%; margin-bottom: 20px; transition: width 0.3s; }
+        .game-btn { display: block; width: 100%; padding: 15px; margin-bottom: 12px; background: transparent; border: 1px solid rgba(197, 160, 101, 0.4); color: var(--primary-gold); border-radius: 8px; cursor: pointer; font-family: 'Noto Serif TC', serif; transition: all 0.3s; text-align: center; font-size: 1rem; outline: none; }
+        .game-btn:hover { border-color: var(--primary-gold); background: rgba(197, 160, 101, 0.2); color: var(--primary-gold); box-shadow: 0 0 10px rgba(197, 160, 101, 0.1); }
+        .game-btn:focus { background: rgba(197, 160, 101, 0.2); color: var(--primary-gold); }
+        .result-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; object-position: center; border: 3px solid var(--primary-gold); margin: 20px auto; }
+        .share-section { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
+        .share-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .share-btn { background: transparent; border: 1px solid #666; color: #888; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; font-family: 'Noto Serif TC', serif; }
+        .share-btn:hover { border-color: var(--primary-gold); color: var(--primary-gold); }
         .mobile-break { display: inline; }
-        
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         .hidden { display: none; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* RWD */
-        @media (max-width: 1200px) {
-            .hero h1 { font-size: 2.8rem; }
-            .characters { 
-                grid-template-columns: repeat(2, 1fr); 
-                gap: 30px;
-                padding: 60px 4%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-logo { width: 140px; margin-bottom: 40px; }
-            .hero { background-attachment: scroll; }
-            .hero h1 { font-size: 2.2rem; margin-bottom: 15px; }
-            .hero p.sub-title { font-size: 1rem; padding: 15px 10px; margin-bottom: 5px; }
-            .hero p.sub-title-extra { font-size: 0.9rem; margin-top: 15px; margin-bottom: 30px; }
-            
-            .intro { padding: 60px 20px; }
-            .intro h2 { font-size: 1.6rem; }
-            .text-desktop { display: none; }
-            .text-mobile { display: block; }
-
-            .characters { 
-                grid-template-columns: 1fr; 
-                padding: 40px 20px; 
-                gap: 50px; 
-            }
-            .card-container { 
-                width: 100%;
-                max-width: 400px;
-                margin: 0 auto;
-                height: 560px;
-            }
-            .collection h2 { font-size: 1.8rem; }
-            
-            .cta-group { flex-direction: column; gap: 15px; }
-            .btn-cta { width: 100%; text-align: center; }
-            
-            .mobile-break { display: block; margin-top: 5px; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        @media (max-width: 1200px) { .hero h1 { font-size: 2.8rem; } .characters { grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 60px 4%; } }
+        @media (max-width: 768px) { .hero-logo { width: 140px; margin-bottom: 40px; } .hero { background-attachment: scroll; } .hero h1 { font-size: 2.2rem; margin-bottom: 15px; } .hero p.sub-title { font-size: 1rem; padding: 15px 10px; margin-bottom: 5px; } .hero p.sub-title-extra { font-size: 0.9rem; margin-top: 15px; margin-bottom: 30px; } .intro { padding: 60px 20px; } .intro h2 { font-size: 1.6rem; } .text-desktop { display: none; } .text-mobile { display: block; } .characters { grid-template-columns: 1fr; padding: 40px 20px; gap: 50px; } .card-container { width: 100%; max-width: 400px; margin: 0 auto; height: 560px; } .collection h2 { font-size: 1.8rem; } .cta-group { flex-direction: column; gap: 15px; } .btn-cta { width: 100%; text-align: center; } .mobile-break { display: block; margin-top: 5px; } }
     </style>
 </head>
 <body>
@@ -608,24 +103,20 @@
         <a href="https://cosmosapp.tw-cosmos.com/" target="_blank">
             <img src="logo-newpng.png" alt="天成飯店集團" class="hero-logo">
         </a>
-        
         <h1>Cosmos Guardians</h1>
         <p class="sub-title">在您每一次抵達之前，<br>我們已在此守候。</p>
         <p class="sub-title-extra">探索天成宇宙的守護精靈 — 比比家族</p>
-        
         <div class="scroll-indicator">SCROLL TO DISCOVER</div>
     </section>
 
     <section class="intro">
         <h2>旅途中的靈魂夥伴</h2>
-        
         <div class="text-desktop">
             <p>旅行的意義，不只在於風景，更在於陪伴。<br>
             當您踏入天成飯店集團的版圖，您就進入了一個充滿魔法的宇宙。<br>
             這裡住著一群性格迥異的夥伴，他們有的藏身於都會的霓虹，有的守護著山林的晨露。<br><br>
             <strong>輕觸下方卡片，尋找屬於您的旅途守護者。</strong></p>
         </div>
-
         <div class="text-mobile">
             <p>旅行的意義，不只在於風景，<br>更在於陪伴。<br><br>
             當您踏入天成飯店集團的版圖，<br>便進入了一個充滿魔法的宇宙。<br><br>
@@ -635,7 +126,6 @@
     </section>
 
     <section class="characters">
-        
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -645,19 +135,12 @@
                 <div class="card-back">
                     <h3>睿比 Ruibby</h3>
                     <div class="role">智慧領航者 | The Wise Owl</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://cosmosapp.tw-cosmos.com/" target="_blank">
-                            <span class="loc-cn">天成飯店集團</span>
-                            <span class="loc-en">Cosmos Hotels and Resorts</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://cosmosapp.tw-cosmos.com/" target="_blank"><span class="loc-cn">天成飯店集團</span><span class="loc-en">Cosmos Hotels and Resorts</span></a></div>
                     <p>他是團隊中的邏輯大腦，總是豎起耳羽，用閱讀心靈的能力洞察世界。睿比象徵著經過深思熟慮後的精準決策，以及那份令人安心的沉穩。</p>
                     <div class="whisper">「智慧，是通往未來的唯一羅盤。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -667,19 +150,12 @@
                 <div class="card-back">
                     <h3>嗚比 Wubby</h3>
                     <div class="role">時空旅人 | The Traveler</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.cosmos-hotel.com.tw/" target="_blank">
-                            <span class="loc-cn">台北天成大飯店</span>
-                            <span class="loc-en">Cosmos Hotel Taipei</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.cosmos-hotel.com.tw/" target="_blank"><span class="loc-cn">台北天成大飯店</span><span class="loc-en">Cosmos Hotel Taipei</span></a></div>
                     <p>設計概念源自火車鳴笛，嗚比見證著車站的聚散離合。他是旅途的起點也是終點，陪伴每一位過客開啟下一段未知的故事。</p>
                     <div class="whisper">「出發，是為了遇見更好的自己。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -689,19 +165,12 @@
                 <div class="card-back">
                     <h3>花比 Hanabby</h3>
                     <div class="role">城市暖光 | The Concierge</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.taipeigarden.com.tw/" target="_blank">
-                            <span class="loc-cn">台北花園大酒店</span>
-                            <span class="loc-en">Taipei Garden Hotel</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.taipeigarden.com.tw/" target="_blank"><span class="loc-cn">台北花園大酒店</span><span class="loc-en">Taipei Garden Hotel</span></a></div>
                     <p>西區轉角最溫暖的風景。作為第一線禮賓員，花比用圓潤的微笑融化城市的冷漠，詮釋了款待之道中最真誠的本質。</p>
                     <div class="whisper">「微笑，是世界通用的語言。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -711,19 +180,12 @@
                 <div class="card-back">
                     <h3>呱比 Guabby</h3>
                     <div class="role">歡愉策展人 | The Event Planner</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.cosmos-ticc.com.tw/" target="_blank">
-                            <span class="loc-cn">天成世貿國際會館</span>
-                            <span class="loc-en">Cosmos Banquet at TICC</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.cosmos-ticc.com.tw/" target="_blank"><span class="loc-cn">天成世貿國際會館</span><span class="loc-en">Cosmos Banquet at TICC</span></a></div>
                     <p>優雅的生活藝術家，從小培養的美學底蘊讓他成為完美的宴會主人。呱比致力於散播歡樂，讓每一次聚會都成為經典。</p>
                     <div class="whisper">「生活，值得一場盛大的慶祝。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -733,19 +195,12 @@
                 <div class="card-back">
                     <h3>乳比 Rubby</h3>
                     <div class="role">城堡築夢師 | Dream Builder</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.grandcosmos.com.tw/" target="_blank">
-                            <span class="loc-cn">瑞穗天合國際觀光酒店</span>
-                            <span class="loc-en">Grand Cosmos Resort Ruisui, Hualien</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.grandcosmos.com.tw/" target="_blank"><span class="loc-cn">瑞穗天合國際觀光酒店</span><span class="loc-en">Grand Cosmos Resort Ruisui, Hualien</span></a></div>
                     <p>瑞穗金色城堡的主人，一位天生的夢想家。他像魔法師般將快樂散播在莊園的每個角落，守護著那份純粹的童話與初心。</p>
                     <div class="whisper">「在夢想的國度裡，沒有不可能。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -755,41 +210,27 @@
                 <div class="card-back">
                     <h3>柚比 Yuzubby</h3>
                     <div class="role">味覺煉金術師 | Flavor Master</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.grandcosmos.com.tw/" target="_blank">
-                            <span class="loc-cn">瑞穗天合國際觀光酒店</span>
-                            <span class="loc-en">Grand Cosmos Resort Ruisui, Hualien</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.grandcosmos.com.tw/" target="_blank"><span class="loc-cn">瑞穗天合國際觀光酒店</span><span class="loc-en">Grand Cosmos Resort Ruisui, Hualien</span></a></div>
                     <p>伴隨著滿山的柚花香氣而生，他是將大地食材轉化為幸福料理的小精靈。每一道佳餚，都是他傳遞誠摯心意的載體。</p>
                     <div class="whisper">「料理的溫度，就是幸福的刻度。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg?text=Q%20BEE" alt="Q比 Q Bee">
+                    <img src="https://www.tw-cosmos.com/wp-content/uploads/sites/30/2025/05/代言人圖_Q比.jpg?text=Q%20BEE" alt="Q Bee">
                     <div class="card-name-overlay"><h3>Q BEE Q比</h3></div>
                 </div>
                 <div class="card-back">
                     <h3>Q比 Q Bee</h3>
                     <div class="role">歸巢守護者 | The Worker</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.b-house.com.tw/" target="_blank">
-                            <span class="loc-cn">天成文旅-蜂巢</span>
-                            <span class="loc-en">Bee House by Cosmos Creation</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.b-house.com.tw/" target="_blank"><span class="loc-cn">天成文旅-蜂巢</span><span class="loc-en">Bee House by Cosmos Creation</span></a></div>
                     <p>辛勤工作的蜜蜂，象徵著對生活的熱愛與投入。在忙碌的一天結束後，Q Bee 守候在蜂巢，為歸來的旅人點亮一盞放鬆的燈。</p>
                     <div class="whisper">「最美的風景，是回家的路。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -799,19 +240,12 @@
                 <div class="card-back">
                     <h3>寶比 Baobby</h3>
                     <div class="role">記憶守密人 | The Vault</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.huashandin.com.tw/" target="_blank">
-                            <span class="loc-cn">天成文旅-華山町</span>
-                            <span class="loc-en">Hua Shan Din by Cosmos Creation</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.huashandin.com.tw/" target="_blank"><span class="loc-cn">天成文旅-華山町</span><span class="loc-en">Hua Shan Din by Cosmos Creation</span></a></div>
                     <p>頭部是藏寶箱，身體是金庫。寶比不僅嫻熟歷史文化，更負責收藏旅人的珍貴回憶，將那份感動鎖在最深處，永不褪色。</p>
                     <div class="whisper">「你的回憶，是我最珍貴的寶藏。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -821,19 +255,12 @@
                 <div class="card-back">
                     <h3>嘟比 Dobby</h3>
                     <div class="role">山林原生力 | The Wild Spirit</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.sundialogue-hotel.com.tw/" target="_blank">
-                            <span class="loc-cn">天成文旅-繪日之丘</span>
-                            <span class="loc-en">Sun Dialogue by Cosmos Creation</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.sundialogue-hotel.com.tw/" target="_blank"><span class="loc-cn">天成文旅-繪日之丘</span><span class="loc-en">Sun Dialogue by Cosmos Creation</span></a></div>
                     <p>擁有堅強意志力的山豬，象徵著原住民樂觀開朗的天性。嘟比帶領旅人放慢腳步，在繪日之丘感受最純粹的生命力。</p>
                     <div class="whisper">「感受心跳與大地的共鳴。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -843,19 +270,12 @@
                 <div class="card-back">
                     <h3>啾比 Jubee</h3>
                     <div class="role">美食尋訪者 | The Gourmet</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.tygc.com.tw/" target="_blank">
-                            <span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span>
-                            <span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.tygc.com.tw/" target="_blank"><span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span><span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span></a></div>
                     <p>總是叼著小魚的白鷺鷥，對美食有著絕對的執著。他象徵著旅途中對風味的極致追求，引領旅人穿梭大街小巷，尋找味蕾的感動。</p>
                     <div class="whisper">「美食在哪，心之所向便在哪。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -865,19 +285,12 @@
                 <div class="card-back">
                     <h3>角比 Jiaobby</h3>
                     <div class="role">盛夏發現者 | Summer Seeker</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.tygc.com.tw/" target="_blank">
-                            <span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span>
-                            <span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.tygc.com.tw/" target="_blank"><span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span><span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span></a></div>
                     <p>頭頂觸角隨時偵測著樂趣的方位。角比熱情如火，樂於分享生活中的瑣事與發現，他是製造歡樂氣氛的高手。</p>
                     <div class="whisper">「保持好奇，世界就是你的遊樂場。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -887,19 +300,12 @@
                 <div class="card-back">
                     <h3>鵲比 Chiuebby</h3>
                     <div class="role">果嶺上的優雅 | The Ace</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.tygc.com.tw/" target="_blank">
-                            <span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span>
-                            <span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.tygc.com.tw/" target="_blank"><span class="loc-cn">桃園高爾夫俱樂部 ‧ 悅華大酒店</span><span class="loc-en">Taoyuan Golf & Country Club, Yaward Resort</span></a></div>
                     <p>小巧聰明的藍鵲，是球場上的運動好手。鵲比化身專業桿弟，在藍天綠地之間，陪伴球友尋找完美的揮桿節奏。</p>
                     <div class="whisper">「專注當下，成就完美一擊。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -909,19 +315,12 @@
                 <div class="card-back">
                     <h3>栗比 Libby</h3>
                     <div class="role">森之探險家 | The Ranger</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://bonchillglamping.com.tw/" target="_blank">
-                            <span class="loc-cn">天成逸旅-朋趣豪華露營</span>
-                            <span class="loc-en">Bon Chill Glamping by Cosmos Orium</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://bonchillglamping.com.tw/" target="_blank"><span class="loc-cn">天成逸旅-朋趣豪華露營</span><span class="loc-en">Bon Chill Glamping by Cosmos Orium</span></a></div>
                     <p>隱身在露營區的調皮松鼠，象徵著管家無所不在的貼心。栗比在不經意間出沒，為野奢露營體驗增添一份驚喜與溫暖。</p>
                     <div class="whisper">「驚喜，總在下一個轉角。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -931,19 +330,12 @@
                 <div class="card-back">
                     <h3>錨比 Ankabby</h3>
                     <div class="role">港都領航員 | The Captain</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://www.cosmos-oasis-voyage.com.tw/" target="_blank">
-                            <span class="loc-cn">天成逸旅-舶寓高雄</span>
-                            <span class="loc-en">Voyage Kaohsiung by Cosmos Orium</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://www.cosmos-oasis-voyage.com.tw/" target="_blank"><span class="loc-cn">天成逸旅-舶寓高雄</span><span class="loc-en">Voyage Kaohsiung by Cosmos Orium</span></a></div>
                     <p>充滿冒險精神的航海家，臉上總是掛著自信的笑容。錨比熟知高雄港的每一段歷史與潮汐，帶領旅人領略這座城市的豪邁與浪漫。</p>
                     <div class="whisper">「已下錨，請在此停泊你的心。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -953,19 +345,12 @@
                 <div class="card-back">
                     <h3>歐比 Oubby</h3>
                     <div class="role">自由海洋之翼 | The Voyager</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <div style="cursor: default;">
-                            <span class="loc-cn">天成逸旅-曉琉球</span>
-                            <span class="loc-en">Xiao Liu Qiu by Cosmos Orium</span>
-                        </div>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><div style="cursor: default;"><span class="loc-cn">天成逸旅-曉琉球</span><span class="loc-en">Xiao Liu Qiu by Cosmos Orium</span></div></div>
                     <p>象徵希望的海龜，在小琉球的湛藍中自在飛翔。歐比鼓勵旅人掙脫束縛，勇敢追逐夢想，享受那份無拘無束的自由。</p>
                     <div class="whisper">「心若自由，哪裡都是天空。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -975,19 +360,12 @@
                 <div class="card-back">
                     <h3>特比 Turbby</h3>
                     <div class="role">湛藍守護者 | Eco Guardian</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <div style="cursor: default;">
-                            <span class="loc-cn">天成逸旅-曉琉球</span>
-                            <span class="loc-en">Xiao Liu Qiu by Cosmos Orium</span>
-                        </div>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><div style="cursor: default;"><span class="loc-cn">天成逸旅-曉琉球</span><span class="loc-en">Xiao Liu Qiu by Cosmos Orium</span></div></div>
                     <p>親切圓潤的島嶼管家，也是位堅定的環保小尖兵。特比提醒著我們，在享受海島魅力的同時，不忘溫柔守護這片美麗的家園。</p>
                     <div class="whisper">「守護，是為了更長久的相遇。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -997,19 +375,12 @@
                 <div class="card-back">
                     <h3>舞比 Flibby</h3>
                     <div class="role">光影捕手 | The Artist</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://hualien.cosmos-oasis.com/" target="_blank">
-                            <span class="loc-cn">天成逸旅-蝴蝶谷</span>
-                            <span class="loc-en">Butterfly Valley by Cosmos Orium</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://hualien.cosmos-oasis.com/" target="_blank"><span class="loc-cn">天成逸旅-蝴蝶谷</span><span class="loc-en">Butterfly Valley by Cosmos Orium</span></a></div>
                     <p>身為插畫家的蝴蝶，擁有捕捉夢幻瞬間的天賦。舞比用她的畫筆，將森林的氣息與陽光的溫度永恆留存，讓色彩在想像中翩翩飛舞。</p>
                     <div class="whisper">「生活即藝術，你就是風景。」</div>
                 </div>
             </div>
         </div>
-
         <div class="card-container">
             <div class="card-inner">
                 <div class="card-front">
@@ -1019,40 +390,27 @@
                 <div class="card-back">
                     <h3>樹比 Treebby</h3>
                     <div class="role">森林智者 | The Guardian</div>
-                    <div class="location">
-                        <span class="label">📍 藏身於</span>
-                        <a href="https://hualien.cosmos-oasis.com/" target="_blank">
-                            <span class="loc-cn">天成逸旅-蝴蝶谷</span>
-                            <span class="loc-en">Butterfly Valley by Cosmos Orium</span>
-                        </a>
-                    </div>
+                    <div class="location"><span class="label">📍 藏身於</span><a href="https://hualien.cosmos-oasis.com/" target="_blank"><span class="loc-cn">天成逸旅-蝴蝶谷</span><span class="loc-en">Butterfly Valley by Cosmos Orium</span></a></div>
                     <p>居住在全台最大樟樹林的守護者，散發著安定的力量。樹比靜靜地陪伴，讓旅人在自然的節奏中，找回內心的平靜與秩序。</p>
                     <div class="whisper">「靜謐，是最強大的力量。」</div>
                 </div>
             </div>
         </div>
-
     </section>
 
     <section class="collection">
         <h2>蒐集散落在台灣地圖上的能量</h2>
-        <p style="color: #999; margin-bottom: 20px;">每一隻比比家族成員，
-        <br>都代表著天成飯店集團的一處獨特風景。
-        <br>2026年，請讓我們成為您旅途中的專屬印記。</p>
-        
+        <p style="color: #999; margin-bottom: 20px;">每一隻比比家族成員，<br>都代表著天成飯店集團的一處獨特風景。<br>2026年，請讓我們成為您旅途中的專屬印記。</p>
         <div class="cta-group">
             <button onclick="openGameModal()" class="btn-cta">✨ 尋找你的靈魂旅伴 | PLAY QUIZ</button>
             <a href="https://link.cosmosclub.tw/nErQ" target="_blank" class="btn-cta">預約下一趟旅程 | BOOK JOURNEY</a>
         </div>
-
         <br>
         <a href="https://link.cosmosclub.tw/nEr7" target="_blank" class="footer-link">前往官網查看完整檔案</a>
     </section>
 
     <footer>
-        <a href="https://cosmosapp.tw-cosmos.com/" target="_blank">
-            <img src="logo-newpng.png" alt="天成飯店集團" class="footer-logo">
-        </a>
+        <a href="https://cosmosapp.tw-cosmos.com/" target="_blank"><img src="logo-newpng.png" alt="天成飯店集團" class="footer-logo"></a>
         <p>&copy; 2026 Cosmos Hotels & Resorts. All Rights Reserved.</p>
         <p>Cosmos Guardians - The Spirits of Hospitality.</p>
     </footer>
@@ -1060,34 +418,23 @@
     <div id="gameModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-modal" onclick="closeGameModal()">&times;</span>
-            
             <div class="game-progress-bar" id="progressBar"></div>
-
             <div id="startScreen" class="fade-in">
                 <h2 style="color: var(--primary-gold); margin-bottom: 20px;">靈魂旅伴測驗</h2>
-                <p style="font-size: 1rem; margin-bottom: 40px; line-height: 1.8; color: #ccc;">
-                    在茫茫的天成宇宙中，<br>有一位守護精靈與你的頻率最相近。<br><br>
-                    回答 8 個關於旅行的直覺問題，<br>找出誰是你在 2026 年的命中注定。
-                </p>
+                <p style="font-size: 1rem; margin-bottom: 40px; line-height: 1.8; color: #ccc;">在茫茫的天成宇宙中，<br>有一位守護精靈與你的頻率最相近。<br><br>回答 8 個關於旅行的直覺問題，<br>找出誰是你在 2026 年的命中注定。</p>
                 <button class="btn-cta" onclick="startGame()" style="margin-bottom: 30px;">開始測驗 | START</button>
             </div>
-
             <div id="quizScreen" class="hidden fade-in">
                 <h3 id="questionText" style="color:white; margin-bottom:20px; font-weight:300;">題目...</h3>
                 <div id="optionsContainer"></div>
             </div>
-
             <div id="resultScreen" class="hidden fade-in">
                 <div style="font-size:0.8rem; color:#888; letter-spacing:2px; margin-bottom:10px;">YOUR SOUL GUARDIAN</div>
                 <h2 id="resultName" style="color: var(--primary-gold);">名字</h2>
                 <img id="resultImage" src="" alt="Result" class="result-img">
                 <p id="resultDesc" style="font-size:0.95rem; line-height:1.6;">描述...</p>
-                
                 <a id="resultLink" href="#" target="_blank" class="btn-cta" style="width:100%; margin-top:10px;">前往他的藏身之處</a>
-                <p id="resultComingSoon" style="display:none; color: var(--primary-gold); font-weight: bold; margin-top: 15px; border-top: 1px solid #444; padding-top: 15px;">
-                    他藏身於天成文旅-曉琉球，<span class="mobile-break"></span>即將於2026年中與您見面
-                </p>
-                
+                <p id="resultComingSoon" style="display:none; color: var(--primary-gold); font-weight: bold; margin-top: 15px; border-top: 1px solid #444; padding-top: 15px;">他藏身於天成文旅-曉琉球，<span class="mobile-break"></span>即將於2026年中與您見面</p>
                 <div class="share-section">
                     <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">SHARE YOUR GUARDIAN</p>
                     <div class="share-buttons">
@@ -1096,72 +443,38 @@
                         <button onclick="copyLink()" class="share-btn">複製連結</button>
                     </div>
                 </div>
-
                 <button class="game-btn" onclick="quizRound++; sendDataToSheet(currentResultName, '動作_再玩一次'); setTimeout(startGame, 300);" style="margin-top:20px; border-color: #666; color: #888;">再測一次</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 【重要】請確認此網址正確無誤
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
-
-        // 【修改】嘗試從瀏覽器記憶取出 ID，如果沒有才產生新的 (永久鎖定使用者)
         let sessionID = localStorage.getItem('cosmos_guardian_uid');
-
         if (!sessionID) {
-            // 如果是新客人，產生一組新的 ID
             sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-            // 把這組 ID 存進瀏覽器，下次來直接用
             localStorage.setItem('cosmos_guardian_uid', sessionID);
         }
-
-        // 【新增】回合計數器，預設為第 1 次
         let quizRound = 1; 
-
-        // 記錄網頁載入時間
         const pageLoadTime = new Date().getTime();
-        // 記錄測驗選擇歷程
         let userChoices = [];
 
-        // 偵測裝置類型
         function getDevicePlatform() {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-            if (/windows phone/i.test(userAgent)) {
-                return "Windows Phone";
-            }
-
-            if (/android/i.test(userAgent)) {
-                return "Android";
-            }
-
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return "iOS";
-            }
-
+            if (/windows phone/i.test(userAgent)) return "Windows Phone";
+            if (/android/i.test(userAgent)) return "Android";
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
             return "PC/Desktop";
         }
 
-        // --- 傳送資料到 Google Sheet 的函式 ---
         function sendDataToSheet(resultName, actionType) {
-            // 避免測試時誤傳
             if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
-
-            // 1. 抓取網址參數 (優先抓 ref=qrcode，沒有的話抓 source)
             const urlParams = new URLSearchParams(window.location.search);
-            const source = urlParams.get('ref') || urlParams.get('source') || 'direct'; // 優先讀取 ref
-
-            // 傳送時帶上 sessionID, device, source
+            const source = urlParams.get('ref') || urlParams.get('source') || 'direct';
             const timestamp = new Date().getTime();
             const device = getDevicePlatform();
-            // 計算停留時間 (秒)
             const duration = Math.round((timestamp - pageLoadTime) / 1000);
-            
-            // 只有在完成測驗時才傳送歷程，其他時候傳空字串以免混淆
-            // 注意：這裡 actionType 包含了 "完成測驗 (第X次)"，所以用 includes 來判斷
             const choicesStr = (actionType.includes("完成測驗")) ? userChoices.join('|') : "";
-
             const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
                              "?resultName=" + encodeURIComponent(resultName) + 
                              "&actionType=" + encodeURIComponent(actionType) +
@@ -1171,54 +484,33 @@
                              "&choices=" + encodeURIComponent(choicesStr) +
                              "&duration=" + duration +
                              "&t=" + timestamp;
-            
-            // 使用 fetch 發送 GET 請求
-            fetch(finalUrl, {
-                method: "GET",
-                mode: "no-cors"
-            }).then(() => {
-                console.log("Data sent:", resultName, actionType, source);
-            }).catch(err => {
-                console.error("Sending failed:", err);
-            });
+            fetch(finalUrl, { method: "GET", mode: "no-cors" }).then(() => console.log("Data sent:", resultName, actionType, source)).catch(err => console.error("Sending failed:", err));
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
             cards.forEach(card => {
-                // 1. 取得該卡片角色的名字 (用於數據追蹤)
                 const nameText = card.querySelector('.card-back h3').innerText;
-                
-                // 2. 針對「前往藏身處」連結加入追蹤
                 const locationLink = card.querySelector('.location a');
                 if (locationLink) {
                     locationLink.addEventListener('click', (e) => {
-                        // 阻止事件冒泡，避免點連結時卡片翻回去
                         e.stopPropagation(); 
                         sendDataToSheet(nameText, "點擊_前往藏身處_卡片");
                     });
                 }
-
-                // 3. 卡片翻轉點擊事件
                 card.addEventListener('click', () => {
                     const isOpen = card.classList.contains('flipped');
                     const currentlyOpen = document.querySelector('.card-container.flipped');
-                    
                     if (currentlyOpen && currentlyOpen !== card) {
-                        // 關閉別張，打開這張
                         currentlyOpen.classList.remove('flipped');
                         setTimeout(() => { 
                             card.classList.add('flipped'); 
-                            // 這裡也是翻開，加入追蹤
                             sendDataToSheet(nameText, "翻閱卡片");
                         }, 200);
                     } else {
-                        // Toggle 當前這張
-                        if (isOpen) { 
-                            card.classList.remove('flipped'); 
-                        } else { 
+                        if (isOpen) { card.classList.remove('flipped'); } 
+                        else { 
                             card.classList.add('flipped'); 
-                            // 翻開時追蹤
                             sendDataToSheet(nameText, "翻閱卡片");
                         }
                     }
@@ -1226,7 +518,6 @@
             });
         });
 
-        // 遊戲資料 (8題)
         const questions = [
             { text: "Q1. 終於抵達飯店放下行李，你的第一個動作是？", options: [{ text: "立刻搜尋附近的隱藏版美食", type: "foodie" }, { text: "換上浴袍，躺在床上發呆", type: "chill" }, { text: "仔細閱讀飯店指南與設施地圖", type: "planner" }, { text: "直接出門，去附近的巷弄探險", type: "adventure" }] },
             { text: "Q2. 旅行中最讓你崩潰的事情是？", options: [{ text: "踩雷吃到很難吃的東西", type: "foodie" }, { text: "行程太趕，累得像行軍", type: "chill" }, { text: "交通延誤或計畫被打亂", type: "planner" }, { text: "一整天都待在室內沒出門", type: "adventure" }] },
@@ -1238,16 +529,13 @@
             { text: "Q8. 2026年，你最想獲得的能量是？", options: [{ text: "富足與滿足感", type: "foodie" }, { text: "內心的平靜與療癒", type: "chill" }, { text: "智慧與長遠的眼光", type: "planner" }, { text: "突破現狀的勇氣", type: "adventure" }] }
         ];
 
-        // 18 隻角色資料 (png版 + 正確分類 + 曉琉球空連結)
         const results = {
-            // 美食與享樂組 (含呱比)
             foodie: [
                 { name: "柚比 Yuzubby", role: "味覺煉金術師", img: "head_yuzubby.png", desc: "你是天生的美食家！對你來說，旅行的意義就是「吃」。你擁有敏銳的味蕾，懂得享受生活中的每一口美好。柚比將帶領你在瑞穗天合，找到味覺的感動。", link: "https://www.grandcosmos.com.tw/" },
                 { name: "啾比 Jubee", role: "美食尋訪者", img: "head_jubee.png", desc: "你對美食有絕對的執著，就像總是叼著小魚的白鷺鷥。啾比將引領你穿梭大街小巷，尋找那份讓味蕾顫動的驚喜。", link: "https://www.tygc.com.tw/" },
                 { name: "花比 Hanabby", role: "城市暖光", img: "head_hanabby.png", desc: "你是朋友眼中溫暖的小太陽，喜歡熱鬧與分享。就像城市暖光花比一樣，用微笑融化陌生感，享受人與人之間最真誠的互動。", link: "https://www.taipeigarden.com.tw/" },
                 { name: "呱比 Guabby", role: "歡愉策展人", img: "head_guabby.png", desc: "你講究生活品味，是天生的策展人。對你來說，旅行就是一場流動的饗宴。呱比優雅的身影，正邀請你共赴一場盛大的慶祝。", link: "https://www.cosmos-ticc.com.tw/" }
             ],
-            // 療癒與自然組
             chill: [
                 { name: "樹比 Treebby", role: "森林智者", img: "head_treebby.png", desc: "你追求心靈的平靜與放鬆。比起趕行程，你更喜歡在森林裡深呼吸，感受大自然的頻率。樹比在蝴蝶谷的樟樹林中，靜靜守候著你。", link: "https://hualien.cosmos-oasis.com/" },
                 { name: "舞比 Flibby", role: "光影捕手", img: "head_flibby.png", desc: "你擁有藝術家的靈魂，善於發現微小的美好。舞比用她的畫筆邀請你，在光影交錯的瞬間，看見生活不一樣的色彩。", link: "https://hualien.cosmos-oasis.com/" },
@@ -1255,14 +543,12 @@
                 { name: "特比 Turbby", role: "湛藍守護者", img: "head_turbby.png", desc: "你有著溫柔堅定的守護之心。特比提醒著你，在享受海島假期的同時，那份與環境共好的心意，是最美的風景。", link: "" }, 
                 { name: "Q比 Q Bee", role: "歸巢守護者", img: "head_qbee.png", desc: "辛勤工作的你，最懂得「休息」的可貴。Q Bee 守候在蜂巢，為疲憊歸來的你點亮一盞燈，那是家一般的溫暖與放鬆。", link: "https://www.b-house.com.tw/" }
             ],
-            // 智慧與策劃組 (含鵲比)
             planner: [
                 { name: "睿比 Ruibby", role: "智慧領航者", img: "head_ruibby.png", desc: "你是團隊中的大腦，思慮周全且充滿智慧。你喜歡一切盡在掌握中的感覺，總能做出最棒的決策。睿比就是你靈魂的鏡子，指引著正確的方向。", link: "https://cosmosapp.tw-cosmos.com/" },
                 { name: "寶比 Baobby", role: "記憶守密人", img: "head_baobby.png", desc: "你珍惜每一段回憶，也喜歡探索歷史與文化。寶比是記憶的守密人，他會幫你收藏旅途中所有珍貴的感動，鎖在心中永不褪色。", link: "https://www.huashandin.com.tw/" },
                 { name: "鵲比 Chiuebby", role: "果嶺上的優雅", img: "head_chiuebby.png", desc: "你專注且優雅，在動靜之間尋求完美的平衡。鵲比化身果嶺上的精靈，陪伴你在每一次揮桿與呼吸中，找到屬於自己的節奏。", link: "https://www.tygc.com.tw/" },
                 { name: "乳比 Rubby", role: "城堡築夢師", img: "head_rubby.png", desc: "你心中住著一個夢想家，相信童話真的存在。乳比是瑞穗城堡的築夢師，他將守護你的初心，讓夢想在金色莊園裡發光。", link: "https://www.grandcosmos.com.tw/" }
             ],
-            // 冒險與自由組 (含角比)
             adventure: [
                 { name: "嘟比 Dobby", role: "山林原生力", img: "head_dobby.png", desc: "你體內住著自由的靈魂！充滿活力，喜歡挑戰未知。嘟比那份山林原生的野性與生命力，最能與你的心跳產生共鳴。", link: "https://www.sundialogue-hotel.com.tw/" },
                 { name: "嗚比 Wubby", role: "時空旅人", img: "head_wubby.png", desc: "你相信旅行的意義在於「出發」。嗚比見證著無數旅人的起點與終點，他將陪伴你搭上下一班列車，駛向未知的精彩故事。", link: "https://www.cosmos-hotel.com.tw/" },
@@ -1276,46 +562,6 @@
         let scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
         let currentResultName = ""; 
         let currentResultRole = "";
-
-        // --- 傳送資料到 Google Sheet 的函式 ---
-        function sendDataToSheet(resultName, actionType) {
-            // 避免測試時誤傳
-            if (YOUR_GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) return;
-
-            // 1. 抓取網址參數 (優先抓 ref=qrcode，沒有的話抓 source)
-            const urlParams = new URLSearchParams(window.location.search);
-            const source = urlParams.get('ref') || urlParams.get('source') || 'direct'; // 優先讀取 ref
-
-            // 傳送時帶上 sessionID, device, source
-            const timestamp = new Date().getTime();
-            const device = getDevicePlatform();
-            // 計算停留時間 (秒)
-            const duration = Math.round((timestamp - pageLoadTime) / 1000);
-            
-            // 只有在完成測驗時才傳送歷程，其他時候傳空字串以免混淆
-            // 注意：這裡 actionType 包含了 "完成測驗 (第X次)"，所以用 includes 來判斷
-            const choicesStr = (actionType.includes("完成測驗")) ? userChoices.join('|') : "";
-
-            const finalUrl = YOUR_GOOGLE_SCRIPT_URL + 
-                             "?resultName=" + encodeURIComponent(resultName) + 
-                             "&actionType=" + encodeURIComponent(actionType) +
-                             "&sessionID=" + encodeURIComponent(sessionID) +
-                             "&device=" + encodeURIComponent(device) +
-                             "&source=" + encodeURIComponent(source) +
-                             "&choices=" + encodeURIComponent(choicesStr) +
-                             "&duration=" + duration +
-                             "&t=" + timestamp;
-            
-            // 使用 fetch 發送 GET 請求
-            fetch(finalUrl, {
-                method: "GET",
-                mode: "no-cors"
-            }).then(() => {
-                console.log("Data sent:", resultName, actionType, source);
-            }).catch(err => {
-                console.error("Sending failed:", err);
-            });
-        }
 
         function openGameModal() {
             document.getElementById('gameModal').style.display = 'flex';
@@ -1339,7 +585,7 @@
         function startGame() {
             currentQuestion = 0;
             scores = { foodie: 0, chill: 0, planner: 0, adventure: 0 };
-            userChoices = []; // 重置選擇歷程
+            userChoices = [];
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('resultScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
@@ -1351,10 +597,8 @@
             document.getElementById('questionText').innerText = q.text;
             const container = document.getElementById('optionsContainer');
             container.innerHTML = '';
-            
             const progress = ((currentQuestion) / questions.length) * 100;
             document.getElementById('progressBar').style.width = `${progress}%`;
-
             q.options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'game-btn';
@@ -1366,9 +610,7 @@
 
         function selectOption(type) {
             scores[type]++;
-            // 記錄歷程: Q1:foodie
             userChoices.push(`Q${currentQuestion + 1}:${type}`);
-            
             currentQuestion++;
             if (currentQuestion < questions.length) {
                 document.getElementById('quizScreen').style.opacity = '0';
@@ -1385,7 +627,6 @@
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('resultScreen').classList.remove('hidden');
             document.getElementById('progressBar').style.width = '100%';
-
             let maxScore = 0;
             let finalType = 'planner';
             for (const [type, score] of Object.entries(scores)) {
@@ -1394,29 +635,21 @@
                     finalType = type;
                 }
             }
-            
             const categoryArray = results[finalType];
             const randomIndex = Math.floor(Math.random() * categoryArray.length);
             const res = categoryArray[randomIndex];
-
             currentResultName = res.name; 
             currentResultRole = res.role;
-
             document.getElementById('resultName').innerText = res.name;
             document.getElementById('resultImage').src = res.img;
             document.getElementById('resultDesc').innerText = res.desc;
-
-            // 【重點修改】紀錄使用者完成測驗 (加上次數標記)
             sendDataToSheet(res.name, "完成測驗 (第" + quizRound + "次)");
-
             const btnLink = document.getElementById('resultLink');
             const txtComing = document.getElementById('resultComingSoon');
-
             if (res.link && res.link !== "") {
                 btnLink.style.display = 'inline-block';
                 txtComing.style.display = 'none';
                 btnLink.href = res.link;
-                // 點擊事件也傳送數據
                 btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處_結果頁");
             } else {
                 btnLink.style.display = 'none';
@@ -1427,31 +660,22 @@
 
         function shareToLine() {
             sendDataToSheet(currentResultName, "分享_Line");
-            
-            // 建立乾淨的分享連結 (只帶 source 參數)
             const cleanUrl = window.location.origin + window.location.pathname + "?source=share_line";
             const encodedUrl = encodeURIComponent(cleanUrl);
-            
             const text = encodeURIComponent(`我的靈魂旅伴是 ${currentResultRole} - ${currentResultName}！快來測測看誰是你的天成守護精靈？`);
             window.open(`https://line.me/R/msg/text/?${text}%0D%0A${encodedUrl}`);
         }
 
         function shareToFB() {
             sendDataToSheet(currentResultName, "分享_Facebook");
-            
-            // 建立乾淨的分享連結 (只帶 source 參數)
             const cleanUrl = window.location.origin + window.location.pathname + "?source=share_facebook";
             const encodedUrl = encodeURIComponent(cleanUrl);
-            
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`);
         }
 
         function copyLink() {
             sendDataToSheet(currentResultName, "動作_複製連結");
-            
-            // 複製時也給帶參數的連結
             const cleanUrl = window.location.origin + window.location.pathname + "?source=share_copy";
-            
             navigator.clipboard.writeText(cleanUrl).then(() => {
                 alert("連結已複製！");
             });
