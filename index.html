@@ -7,15 +7,15 @@
     
     <title>Cosmos Guardians | 旅途中的靈魂夥伴 - 天成飯店集團</title>
 
-    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG_v2.png">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cosmosbibi.katzchi.com/">
     <meta property="og:title" content="Cosmos Guardians | 旅途中的靈魂夥伴">
     <meta property="og:description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。">
-    <meta name="description" content="探索天成宇宙的守護精靈 — 比比家族。每一隻比比家族成員，都代表著天成飯店集團的一處獨特風景。在您每一次抵達之前，我們已在此守候。">
-
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <meta property="og:image" content="https://cosmosbibi.katzchi.com/cosmosbibi_OG_v2.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1102,24 +1102,51 @@
     </div>
 
     <script>
-        // Google Apps Script 網址
+        // 【重要】請確認此網址正確無誤
         const YOUR_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIR4Vmxggo5vPXAY--IEn2TUdx-5mndHYcF9JRL628n8TotCWDC1TnOhXuREAsuaJG/exec'; 
 
-        // 產生唯一 Session ID (識別碼)串聯使用者的所有動作
+        // 產生唯一 Session ID
         const sessionID = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
 
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card-container');
             cards.forEach(card => {
+                // 1. 取得該卡片角色的名字 (用於數據追蹤)
+                // 結構是 .card-back h3 -> "睿比 Ruibby"
+                const nameText = card.querySelector('.card-back h3').innerText;
+                
+                // 2. 針對「前往藏身處」連結加入追蹤
+                const locationLink = card.querySelector('.location a');
+                if (locationLink) {
+                    locationLink.addEventListener('click', (e) => {
+                        // 阻止事件冒泡，避免點連結時卡片翻回去
+                        e.stopPropagation(); 
+                        sendDataToSheet(nameText, "點擊_前往藏身處_卡片");
+                    });
+                }
+
+                // 3. 卡片翻轉點擊事件
                 card.addEventListener('click', () => {
                     const isOpen = card.classList.contains('flipped');
                     const currentlyOpen = document.querySelector('.card-container.flipped');
+                    
                     if (currentlyOpen && currentlyOpen !== card) {
+                        // 關閉別張，打開這張
                         currentlyOpen.classList.remove('flipped');
-                        setTimeout(() => { card.classList.add('flipped'); }, 200);
+                        setTimeout(() => { 
+                            card.classList.add('flipped'); 
+                            // 這裡也是翻開，加入追蹤
+                            sendDataToSheet(nameText, "翻閱卡片");
+                        }, 200);
                     } else {
-                        if (isOpen) { card.classList.remove('flipped'); } 
-                        else { card.classList.add('flipped'); }
+                        // Toggle 當前這張
+                        if (isOpen) { 
+                            card.classList.remove('flipped'); 
+                        } else { 
+                            card.classList.add('flipped'); 
+                            // 翻開時追蹤
+                            sendDataToSheet(nameText, "翻閱卡片");
+                        }
                     }
                 });
             });
@@ -1296,7 +1323,7 @@
                 txtComing.style.display = 'none';
                 btnLink.href = res.link;
                 // 點擊事件也傳送數據
-                btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處");
+                btnLink.onclick = () => sendDataToSheet(res.name, "點擊_前往藏身處_結果頁");
             } else {
                 btnLink.style.display = 'none';
                 txtComing.style.display = 'block';
